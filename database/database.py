@@ -634,13 +634,22 @@ def get_safe_config_summary(config=None):
     return safe
 
 
+_MYSQL_UNAVAILABLE = False
+
+
 def get_db_connection(include_database=True, autocommit=False):
     """
     Establish and return a database connection.
     Tries MySQL connection first. If MySQL is unreachable (e.g. cloud deployment without MySQL daemon),
     automatically falls back to SQLite database for seamless operation.
     """
-    if os.getenv("DB_TYPE", "").lower() == "sqlite":
+    global _MYSQL_UNAVAILABLE
+
+    db_type = os.getenv("DB_TYPE", "").lower()
+    is_cloud = bool(os.getenv("RENDER") or os.getenv("IS_CLOUD"))
+    db_host = os.getenv("DB_HOST", "localhost")
+
+    if db_type == "sqlite" or _MYSQL_UNAVAILABLE or (is_cloud and db_host in ("localhost", "127.0.0.1")):
         init_sqlite_db()
         return SQLiteConnectionWrapper(SQLITE_DB_PATH)
 
@@ -653,8 +662,9 @@ def get_db_connection(include_database=True, autocommit=False):
         if connection.is_connected():
             return connection
     except Exception as err:
-        logger.warning(
-            "MySQL connection unavailable (%s: Target %s:%s). Falling back to SQLite database.",
+        _MYSQL_UNAVAILABLE = True
+        logger.info(
+            "MySQL connection unavailable (%s: Target %s:%s). Active mode set to SQLite.",
             str(err),
             safe_summary.get("host"),
             safe_summary.get("port")
@@ -667,6 +677,7 @@ def get_db_connection(include_database=True, autocommit=False):
     except Exception as sqlite_err:
         logger.error("SQLite fallback failed: %s", str(sqlite_err))
         return None
+
 
 
 @contextmanager
