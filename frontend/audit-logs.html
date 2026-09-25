@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Security & Audit Logs — Apex CRM</title>
+  <link rel="icon" type="image/png" href="assets/images/apex-crm-icon.png">
+  <link rel="stylesheet" href="css/style.css?v=8.0">
+  <link rel="stylesheet" href="css/dashboard.css?v=8.0">
+  <link rel="stylesheet" href="css/responsive.css?v=8.0">
+</head>
+<body>
+  <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
+
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside id="crmSidebar" class="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand-logo" title="Apex CRM">
+          <img src="assets/images/apex-crm-logo.png" alt="Apex CRM" class="brand-logo-img">
+        </a>
+      </div>
+
+      <div class="sidebar-content">
+        <div class="nav-section-title">Main Navigation</div>
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="dashboard.html"><span class="nav-icon">📊</span><span>Dashboard</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="customers.html"><span class="nav-icon">👥</span><span>Customers</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="leads.html"><span class="nav-icon">🎯</span><span>Leads</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="deals.html"><span class="nav-icon">💼</span><span>Deals Pipeline</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="tasks.html"><span class="nav-icon">✅</span><span>Tasks</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="calls.html"><span class="nav-icon">📞</span><span>Calls</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="meetings.html"><span class="nav-icon">📅</span><span>Meetings</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="calendar.html"><span class="nav-icon">🗓️</span><span>Calendar</span></a>
+          </li>
+        </ul>
+
+        <div class="nav-section-title" style="margin-top: 16px;">Business & Billing</div>
+        <ul class="nav-menu">
+          <li class="nav-item" data-permission="products.view">
+            <a href="products.html"><span class="nav-icon">📦</span><span>Products</span></a>
+          </li>
+          <li class="nav-item" data-permission="invoices.view">
+            <a href="invoices.html"><span class="nav-icon">🧾</span><span>Invoices</span></a>
+          </li>
+          <li class="nav-item" data-permission="payments.view">
+            <a href="payments.html"><span class="nav-icon">💳</span><span>Payments</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="emails.html"><span class="nav-icon">✉️</span><span>Emails</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="notifications.html"><span class="nav-icon">🔔</span><span>Notifications</span></a>
+          </li>
+        </ul>
+
+        <div class="nav-section-title" style="margin-top: 16px;">Analytics & System</div>
+        <ul class="nav-menu">
+          <li class="nav-item" data-permission="reports.view">
+            <a href="reports.html"><span class="nav-icon">📈</span><span>Reports</span></a>
+          </li>
+          <li class="nav-item" data-permission="users.view">
+            <a href="users.html"><span class="nav-icon">👤</span><span>Users</span></a>
+          </li>
+          <li class="nav-item active">
+            <a href="audit-logs.html"><span class="nav-icon">🛡️</span><span>Audit Logs</span></a>
+          </li>
+          <li class="nav-item" data-permission="settings.view">
+            <a href="settings.html"><span class="nav-icon">⚙️</span><span>Settings</span></a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="user-mini-profile">
+          <div class="avatar">U</div>
+          <div class="user-info">
+            <div class="user-name">User</div>
+            <div class="user-role">Role</div>
+          </div>
+          <a href="#" title="Sign out" style="margin-left: auto; color: var(--text-muted); font-size: 1.1rem;">🚪</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-wrapper">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button id="sidebarToggleBtn" class="sidebar-toggle-btn">☰</button>
+          <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" placeholder="Search customers, leads, deals..." aria-label="Global search">
+          </div>
+        </div>
+        <div class="topbar-right">
+          <div id="apiStatusBadge" class="api-badge">
+            <span id="apiStatusDot" class="status-dot"></span>
+            <span id="apiStatusText">Checking API...</span>
+          </div>
+          <a href="notifications.html" class="icon-btn" title="Notifications" style="text-decoration: none; position: relative;">
+            <span>🔔</span>
+            <span class="notification-badge-count" style="display: none; position: absolute; top: -4px; right: -4px; background: #e53e3e; color: #fff; font-size: 0.65rem; border-radius: 10px; padding: 1px 5px; font-weight: bold;">0</span>
+          </a>
+          <a href="profile.html" class="avatar" title="View Profile" style="text-decoration: none; cursor: pointer;">U</a>
+        </div>
+      </header>
+
+      <main class="dashboard-content">
+        <!-- Page Header -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <h1 class="page-title" style="margin-bottom: 4px;">🛡️ Security Audit Logs</h1>
+            <p style="color: var(--text-secondary); font-size: 0.875rem;">Immutable compliance record of all CRM modifications, user logins, and administrative actions.</p>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button id="btnExportAuditCsv" class="btn btn-outline btn-sm">📥 Export CSV</button>
+            <button id="btnPrintAudit" class="btn btn-outline btn-sm" onclick="UI.print()">🖨️ Print</button>
+          </div>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="card" style="margin-bottom: 20px; padding: 16px;">
+          <form id="auditFilterForm" style="display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end;">
+            <div class="form-group" style="margin-bottom: 0; min-width: 140px;">
+              <label class="form-label" for="filterEntity">Entity</label>
+              <select id="filterEntity" class="form-control">
+                <option value="">All Entities</option>
+                <option value="customer">Customers</option>
+                <option value="lead">Leads</option>
+                <option value="deal">Deals</option>
+                <option value="invoice">Invoices</option>
+                <option value="payment">Payments</option>
+                <option value="task">Tasks</option>
+                <option value="user">Users</option>
+                <option value="setting">Settings</option>
+                <option value="backup">Backup/Restore</option>
+              </select>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 0; min-width: 140px;">
+              <label class="form-label" for="filterAction">Action</label>
+              <select id="filterAction" class="form-control">
+                <option value="">All Actions</option>
+                <option value="CREATE">Create</option>
+                <option value="UPDATE">Update</option>
+                <option value="DELETE">Delete</option>
+                <option value="LOGIN">Login</option>
+                <option value="EXPORT">Export</option>
+                <option value="RESTORE">Restore</option>
+              </select>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 0; min-width: 130px;">
+              <label class="form-label" for="filterStartDate">From</label>
+              <input type="date" id="filterStartDate" class="form-control">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 0; min-width: 130px;">
+              <label class="form-label" for="filterEndDate">To</label>
+              <input type="date" id="filterEndDate" class="form-control">
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+              <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+              <button type="button" id="btnResetAudit" class="btn btn-outline btn-sm">Reset</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Logs Table -->
+        <div class="card" style="padding: 0; overflow: hidden;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width: 160px;">Timestamp</th>
+                <th>Actor</th>
+                <th>Entity</th>
+                <th>Action</th>
+                <th>IP Address</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody id="auditLogsBody">
+              <!-- Rendered via audit-logs.js -->
+            </tbody>
+          </table>
+
+          <!-- Pagination -->
+          <div class="pagination" id="auditPagination" style="padding: 12px 20px;">
+            <!-- Pagination buttons -->
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Audit Detail Diff Modal -->
+  <div class="modal" id="auditDetailModal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog" style="max-width: 580px;">
+      <div class="modal-header">
+        <h3 class="modal-title">Audit Record Details</h3>
+        <button class="modal-close" onclick="UI.closeModal('auditDetailModal')">&times;</button>
+      </div>
+      <div class="modal-body" id="auditDetailBody">
+        <!-- Rendered dynamically -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline btn-sm" onclick="UI.closeModal('auditDetailModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js?v=8.0"></script>
+  <script src="js/auth.js?v=8.0"></script>
+  <script src="js/app.js?v=8.0"></script>
+  <script src="js/audit-logs.js?v=8.0"></script>
+</body>
+</html>

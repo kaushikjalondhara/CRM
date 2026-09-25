@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leads & Opportunities — Apex CRM</title>
+  <link rel="icon" type="image/png" href="assets/images/apex-crm-icon.png">
+  <link rel="stylesheet" href="css/style.css?v=8.0">
+  <link rel="stylesheet" href="css/dashboard.css?v=8.0">
+  <link rel="stylesheet" href="css/responsive.css?v=8.0">
+</head>
+<body>
+  <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
+
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside id="crmSidebar" class="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand-logo" title="Apex CRM">
+          <img src="assets/images/apex-crm-logo.png" alt="Apex CRM" class="brand-logo-img">
+        </a>
+      </div>
+
+      <div class="sidebar-content">
+        <div class="nav-section-title">Main Navigation</div>
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="dashboard.html">
+              <span class="nav-icon">📊</span>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="customers.html">
+              <span class="nav-icon">👥</span>
+              <span>Customers</span>
+            </a>
+          </li>
+          <li class="nav-item active">
+            <a href="leads.html">
+              <span class="nav-icon">🎯</span>
+              <span>Leads</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="deals.html">
+              <span class="nav-icon">💼</span>
+              <span>Deals Pipeline</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="tasks.html">
+              <span class="nav-icon">✅</span>
+              <span>Tasks</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="calls.html">
+              <span class="nav-icon">📞</span>
+              <span>Calls</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="meetings.html">
+              <span class="nav-icon">📅</span>
+              <span>Meetings</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="calendar.html">
+              <span class="nav-icon">🗓️</span>
+              <span>Calendar</span>
+            </a>
+          </li>
+        </ul>
+        <div class="nav-section-title" style="margin-top: 16px;">Business & Billing</div>
+        <ul class="nav-menu">
+          <li class="nav-item" data-permission="products.view">
+            <a href="products.html"><span class="nav-icon">📦</span><span>Products</span></a>
+          </li>
+          <li class="nav-item" data-permission="invoices.view">
+            <a href="invoices.html"><span class="nav-icon">🧾</span><span>Invoices</span></a>
+          </li>
+          <li class="nav-item" data-permission="payments.view">
+            <a href="payments.html"><span class="nav-icon">💳</span><span>Payments</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="emails.html"><span class="nav-icon">✉️</span><span>Emails</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="notifications.html"><span class="nav-icon">🔔</span><span>Notifications</span></a>
+          </li>
+        </ul>
+
+        <div class="nav-section-title" style="margin-top: 16px;">Analytics & System</div>
+        <ul class="nav-menu">
+          <li class="nav-item" data-permission="reports.view">
+            <a href="reports.html"><span class="nav-icon">📈</span><span>Reports</span></a>
+          </li>
+          <li class="nav-item" data-permission="users.view">
+            <a href="users.html"><span class="nav-icon">👤</span><span>Users</span></a>
+          </li>
+          <li class="nav-item" data-permission="users.view">
+            <a href="audit-logs.html"><span class="nav-icon">🛡️</span><span>Audit Logs</span></a>
+          </li>
+          <li class="nav-item" data-permission="settings.view">
+            <a href="settings.html"><span class="nav-icon">⚙️</span><span>Settings</span></a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="user-mini-profile">
+          <div class="avatar">U</div>
+          <div class="user-info">
+            <div class="user-name">User</div>
+            <div class="user-role">Role</div>
+          </div>
+          <a href="#" title="Sign out" style="margin-left: auto; color: var(--text-muted); font-size: 1.1rem;">🚪</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button id="sidebarToggleBtn" class="sidebar-toggle-btn">☰</button>
+          <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="leadSearch" placeholder="Search lead name, email, company..." aria-label="Search leads">
+          </div>
+        </div>
+        <div class="topbar-right">
+          <div id="apiStatusBadge" class="api-badge">
+            <span id="apiStatusDot" class="status-dot"></span>
+            <span id="apiStatusText">Checking API...</span>
+          </div>
+          <a href="notifications.html" class="icon-btn" title="Notifications" style="text-decoration: none; position: relative; margin-right: 8px;">
+            <span>🔔</span>
+            <span class="notification-badge-count" style="display: none; position: absolute; top: -4px; right: -4px; background: #e53e3e; color: #fff; font-size: 0.65rem; border-radius: 10px; padding: 1px 5px; font-weight: bold;">0</span>
+          </a>
+          <div class="avatar">U</div>
+        </div>
+      </header>
+
+      <main class="dashboard-content">
+        <!-- Page Header -->
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Leads & Prospects</h1>
+            <p class="page-subtitle">Track prospective clients from discovery to deal conversion</p>
+          </div>
+          <div class="toolbar-actions" style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="btn btn-outline" id="importLeadsBtn" title="Bulk Import Leads">
+              <span>📥</span> Import
+            </button>
+            <div class="dropdown" style="display: inline-block; position: relative;">
+              <button type="button" class="btn btn-outline" id="exportBtn" onclick="this.nextElementSibling.classList.toggle('show')">
+                <span>📤</span> Export ▾
+              </button>
+              <div class="dropdown-menu" style="display: none; position: absolute; right: 0; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: var(--radius-sm); box-shadow: var(--shadow-md); min-width: 140px; z-index: 100;">
+                <a href="#" class="dropdown-item" style="display: block; padding: 8px 14px; text-decoration: none; color: var(--text-primary); font-size: 0.85rem;" onclick="UI.exportData('leads', 'csv'); this.parentElement.classList.remove('show'); return false;">📄 CSV (.csv)</a>
+                <a href="#" class="dropdown-item" style="display: block; padding: 8px 14px; text-decoration: none; color: var(--text-primary); font-size: 0.85rem;" onclick="UI.exportData('leads', 'xlsx'); this.parentElement.classList.remove('show'); return false;">📊 Excel (.xlsx)</a>
+              </div>
+            </div>
+            <button class="btn btn-outline" onclick="UI.print()" title="Print Leads List">
+              <span>🖨️</span> Print
+            </button>
+            <button class="btn btn-primary" id="addLeadBtn">
+              <span>+</span> New Lead
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Toolbar -->
+        <div class="toolbar">
+          <div class="toolbar-filters">
+            <select id="leadStatusFilter" class="form-select" style="width: 180px;">
+              <option value="">All Statuses</option>
+              <option value="new">New</option>
+              <option value="contacted">Contacted</option>
+              <option value="qualified">Qualified</option>
+              <option value="proposal">Proposal</option>
+              <option value="negotiation">Negotiation</option>
+              <option value="converted">Converted</option>
+              <option value="lost">Lost</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Bulk Actions Floating Bar -->
+        <div id="bulkActionsToolbar" class="bulk-actions-toolbar">
+          <div class="bulk-actions-left">
+            <span>Selected <span id="bulkSelectedCount" class="bulk-count-badge">0</span> leads</span>
+          </div>
+          <div class="bulk-actions-right">
+            <button type="button" class="btn btn-secondary btn-sm" id="bulkAssignBtn">👤 Assign Rep</button>
+            <button type="button" class="btn btn-secondary btn-sm" id="bulkStatusBtn">🔄 Status</button>
+            <button type="button" class="btn btn-secondary btn-sm" id="bulkExportBtn">📤 Export</button>
+            <button type="button" class="btn btn-danger btn-sm" id="bulkDeleteBtn">🗑 Delete</button>
+          </div>
+        </div>
+
+        <!-- Table Card -->
+        <div class="table-card">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th style="width: 40px; text-align: center;"><input type="checkbox" id="selectAll" title="Select All"></th>
+                  <th>Lead / Company</th>
+                  <th>Contact Info</th>
+                  <th>Status</th>
+                  <th>Est. Value</th>
+                  <th>Assigned Rep</th>
+                  <th>Created</th>
+                  <th style="text-align: right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="leadTableBody">
+                <tr><td colspan="8" style="text-align: center; padding: 24px;">Loading leads...</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="leadPagination" class="pagination-wrapper"></div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Add / Edit Lead Modal -->
+  <div id="leadModal" class="modal">
+    <div class="modal-backdrop" onclick="UI.closeModal('leadModal')"></div>
+    <div class="modal-dialog modal-lg">
+      <div class="modal-header">
+        <h3 id="leadModalTitle" class="modal-title">Add New Lead</h3>
+        <button class="modal-close" onclick="UI.closeModal('leadModal')">&times;</button>
+      </div>
+      <form id="leadForm">
+        <input type="hidden" id="leadId">
+        <div class="modal-body">
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="leadFirstName">First Name *</label>
+              <input type="text" id="leadFirstName" class="form-control" required placeholder="Alex">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="leadLastName">Last Name</label>
+              <input type="text" id="leadLastName" class="form-control" placeholder="Morgan">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="leadCompany">Company Name</label>
+              <input type="text" id="leadCompany" class="form-control" placeholder="Venture Dynamics">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="leadEmail">Email Address *</label>
+              <input type="email" id="leadEmail" class="form-control" required placeholder="alex@venturedyn.com">
+            </div>
+          </div>
+
+          <div class="form-grid-3">
+            <div class="form-group">
+              <label class="form-label" for="leadPhone">Phone Number</label>
+              <input type="text" id="leadPhone" class="form-control" placeholder="+1 555-4321">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="leadSource">Source</label>
+              <select id="leadSource" class="form-select">
+                <option value="website">Website</option>
+                <option value="referral">Referral</option>
+                <option value="social">Social Media</option>
+                <option value="campaign">Campaign</option>
+                <option value="cold_call">Cold Call</option>
+                <option value="event">Event</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="leadPriority">Priority</label>
+              <select id="leadPriority" class="form-select">
+                <option value="low">Low</option>
+                <option value="medium" selected>Medium</option>
+                <option value="high">High</option>
+                <option value="urgent">Urgent</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid-3">
+            <div class="form-group">
+              <label class="form-label" for="leadStatus">Status</label>
+              <select id="leadStatus" class="form-select">
+                <option value="new">New</option>
+                <option value="contacted">Contacted</option>
+                <option value="qualified">Qualified</option>
+                <option value="proposal">Proposal</option>
+                <option value="negotiation">Negotiation</option>
+                <option value="converted">Converted</option>
+                <option value="lost">Lost</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="leadEstValue">Estimated Deal Value ($)</label>
+              <input type="number" step="0.01" id="leadEstValue" class="form-control" placeholder="10000.00">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="leadAssignedTo">Assigned Rep</label>
+              <select id="leadAssignedTo" class="form-select">
+                <option value="">-- Unassigned --</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="UI.closeModal('leadModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Lead</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/api.js?v=8.0"></script>
+  <script src="js/auth.js?v=8.0"></script>
+  <script src="js/app.js?v=8.0"></script>
+  <script src="js/leads.js?v=8.0"></script>
+</body>
+</html>

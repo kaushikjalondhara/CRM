@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Communications — Apex CRM</title>
+  <link rel="icon" type="image/png" href="assets/images/apex-crm-icon.png">
+  <link rel="stylesheet" href="css/style.css?v=8.0">
+  <link rel="stylesheet" href="css/dashboard.css?v=8.0">
+  <link rel="stylesheet" href="css/responsive.css?v=8.0">
+  <style>
+    .tab-nav {
+      display: flex;
+      gap: 8px;
+      border-bottom: 2px solid #edf2f7;
+      margin-bottom: 20px;
+    }
+    .tab-btn {
+      padding: 10px 18px;
+      background: none;
+      border: none;
+      font-weight: 600;
+      color: #718096;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      font-size: 0.95rem;
+    }
+    .tab-btn.active {
+      color: #073472;
+      border-bottom-color: #FD6713;
+    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+  </style>
+</head>
+<body>
+  <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
+
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside id="crmSidebar" class="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand-logo" title="Apex CRM">
+          <img src="assets/images/apex-crm-logo.png" alt="Apex CRM" class="brand-logo-img">
+        </a>
+      </div>
+
+      <div class="sidebar-content">
+        <div class="nav-section-title">Main Navigation</div>
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="dashboard.html"><span class="nav-icon">📊</span><span>Dashboard</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="customers.html"><span class="nav-icon">👥</span><span>Customers</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="leads.html"><span class="nav-icon">🎯</span><span>Leads</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="deals.html"><span class="nav-icon">💼</span><span>Deals Pipeline</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="tasks.html"><span class="nav-icon">✅</span><span>Tasks</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="calls.html"><span class="nav-icon">📞</span><span>Calls</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="meetings.html"><span class="nav-icon">📅</span><span>Meetings</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="calendar.html">
+              <span class="nav-icon">🗓️</span>
+              <span>Calendar</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="nav-section-title" style="margin-top: 16px;">Business & Billing</div>
+        <ul class="nav-menu">
+          <li class="nav-item" data-permission="products.view">
+            <a href="products.html"><span class="nav-icon">📦</span><span>Products</span></a>
+          </li>
+          <li class="nav-item" data-permission="invoices.view">
+            <a href="invoices.html"><span class="nav-icon">🧾</span><span>Invoices</span></a>
+          </li>
+          <li class="nav-item" data-permission="payments.view">
+            <a href="payments.html"><span class="nav-icon">💳</span><span>Payments</span></a>
+          </li>
+          <li class="nav-item active">
+            <a href="emails.html"><span class="nav-icon">✉️</span><span>Emails</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="notifications.html"><span class="nav-icon">🔔</span><span>Notifications</span></a>
+          </li>
+        </ul>
+
+        <div class="nav-section-title" style="margin-top: 16px;">Analytics & System</div>
+        <ul class="nav-menu">
+          <li class="nav-item" data-permission="reports.view">
+            <a href="reports.html"><span class="nav-icon">📈</span><span>Reports</span></a>
+          </li>
+          <li class="nav-item" data-permission="users.view">
+            <a href="users.html"><span class="nav-icon">👤</span><span>Users</span></a>
+          </li>
+          <li class="nav-item" data-permission="users.view">
+            <a href="audit-logs.html"><span class="nav-icon">🛡️</span><span>Audit Logs</span></a>
+          </li>
+          <li class="nav-item" data-permission="settings.view">
+            <a href="settings.html"><span class="nav-icon">⚙️</span><span>Settings</span></a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="user-mini-profile">
+          <div class="avatar">U</div>
+          <div class="user-info">
+            <span class="user-name">Loading...</span>
+            <span class="user-role">...</span>
+          </div>
+          <a href="#" class="logout-link" title="Sign out" style="margin-left: auto; text-decoration: none; font-size: 1.1rem;">🚪</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      <header class="top-navbar">
+        <div class="navbar-left">
+          <button id="sidebarToggleBtn" class="sidebar-toggle" aria-label="Toggle Sidebar">☰</button>
+          <div class="page-title-box">
+            <h1 class="page-title">Email Communications</h1>
+            <p class="page-subtitle">Send correspondence, log client messages, and manage standardized email templates.</p>
+          </div>
+        </div>
+        <div class="navbar-right">
+          <a href="notifications.html" class="btn btn-secondary" style="position: relative; padding: 6px 12px; margin-right: 8px;" title="Notifications">
+            🔔 <span class="notification-badge-count" style="display: none; position: absolute; top: -6px; right: -6px; background: #e53e3e; color: #fff; font-size: 0.7rem; border-radius: 10px; padding: 2px 6px; font-weight: bold;">0</span>
+          </a>
+          <button id="composeEmailBtn" class="btn btn-primary">
+            <span>✉️</span> Compose Email
+          </button>
+        </div>
+      </header>
+
+      <main class="content-area">
+        <!-- SMTP Status Banner -->
+        <div id="smtpNoticeBanner" style="display: none; padding: 12px 16px; border-radius: 6px; margin-bottom: 20px; font-size: 0.9rem;"></div>
+
+        <!-- Navigation Tabs -->
+        <div class="tab-nav">
+          <button class="tab-btn active" onclick="switchTab('emailsTab', this)">Emails History</button>
+          <button class="tab-btn" onclick="switchTab('templatesTab', this)">Email Templates</button>
+        </div>
+
+        <!-- Tab 1: Emails Log -->
+        <div id="emailsTab" class="tab-content active">
+          <!-- Filters -->
+          <div class="card" style="margin-bottom: 20px; padding: 16px;">
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+              <div style="flex: 1; min-width: 200px;">
+                <input type="text" id="searchInput" class="form-control" placeholder="Search by recipient, subject, or message...">
+              </div>
+              <div style="width: 160px;">
+                <select id="statusFilter" class="form-control">
+                  <option value="">All Statuses</option>
+                  <option value="sent">Sent</option>
+                  <option value="draft">Draft</option>
+                  <option value="failed">Failed</option>
+                </select>
+              </div>
+              <div>
+                <button id="clearFiltersBtn" class="btn btn-secondary">Reset</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Emails Table -->
+          <div class="card">
+            <div class="table-responsive">
+              <table class="data-table" id="emailsTable">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Recipient</th>
+                    <th>Subject</th>
+                    <th>Linked Record</th>
+                    <th>Sender</th>
+                    <th>Status</th>
+                    <th style="text-align: right;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="emailsTableBody">
+                  <tr>
+                    <td colspan="7" style="text-align: center; padding: 32px; color: #718096;">
+                      Loading emails...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Pagination -->
+            <div id="paginationContainer" style="display: flex; justify-content: space-between; align-items: center; padding: 16px; border-top: 1px solid #edf2f7;">
+              <div id="paginationInfo" style="font-size: 0.875rem; color: #718096;">Showing 0 of 0</div>
+              <div style="display: flex; gap: 8px;">
+                <button id="prevPageBtn" class="btn btn-secondary btn-sm" disabled>Previous</button>
+                <button id="nextPageBtn" class="btn btn-secondary btn-sm" disabled>Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Email Templates -->
+        <div id="templatesTab" class="tab-content">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <h3 style="margin: 0; font-size: 1.1rem; color: #2d3748;">Saved Standard Templates</h3>
+            <button id="createTemplateBtn" class="btn btn-primary btn-sm">+ New Template</button>
+          </div>
+
+          <div class="card">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Template Name</th>
+                    <th>Subject</th>
+                    <th>Body Preview</th>
+                    <th>Created By</th>
+                    <th style="text-align: right;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="templatesTableBody">
+                  <tr>
+                    <td colspan="5" style="text-align: center; padding: 32px; color: #718096;">Loading templates...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Compose Email Modal -->
+  <div id="composeModal" class="modal">
+    <div class="modal-backdrop" onclick="UI.closeModal('composeModal')"></div>
+    <div class="modal-dialog modal-lg" style="max-width: 650px;">
+      <div class="modal-header">
+        <h3 class="modal-title">Compose Email</h3>
+        <button type="button" class="modal-close" onclick="UI.closeModal('composeModal')">&times;</button>
+      </div>
+      <form id="composeForm">
+        <div class="modal-body">
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="composeCustomer">Link Customer (Optional)</label>
+              <select id="composeCustomer" class="form-control">
+                <option value="">-- None --</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="composeTemplateSelect">Insert Template</label>
+              <select id="composeTemplateSelect" class="form-control">
+                <option value="">-- Select Template --</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="composeRecipient">Recipient Email *</label>
+            <input type="email" id="composeRecipient" class="form-control" required placeholder="client@example.com">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="composeSubject">Subject *</label>
+            <input type="text" id="composeSubject" class="form-control" required placeholder="Subject line...">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="composeMessage">Message Body *</label>
+            <textarea id="composeMessage" class="form-control" rows="6" required placeholder="Write your email here..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="UI.closeModal('composeModal')">Cancel</button>
+          <button type="submit" id="sendEmailBtn" class="btn btn-primary">Send Email</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Template Modal -->
+  <div id="templateModal" class="modal">
+    <div class="modal-backdrop" onclick="UI.closeModal('templateModal')"></div>
+    <div class="modal-dialog" style="max-width: 550px;">
+      <div class="modal-header">
+        <h3 id="templateModalTitle" class="modal-title">Create Email Template</h3>
+        <button type="button" class="modal-close" onclick="UI.closeModal('templateModal')">&times;</button>
+      </div>
+      <form id="templateForm">
+        <input type="hidden" id="templateId">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="tmplName">Template Name *</label>
+            <input type="text" id="tmplName" class="form-control" required placeholder="e.g. Welcome Email">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="tmplSubject">Default Subject *</label>
+            <input type="text" id="tmplSubject" class="form-control" required placeholder="e.g. Welcome to APEX Solutions">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="tmplBody">Body Content *</label>
+            <textarea id="tmplBody" class="form-control" rows="5" required placeholder="Write default email template text..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="UI.closeModal('templateModal')">Cancel</button>
+          <button type="submit" id="saveTemplateBtn" class="btn btn-primary">Save Template</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- View Email Modal -->
+  <div id="viewEmailModal" class="modal">
+    <div class="modal-backdrop" onclick="UI.closeModal('viewEmailModal')"></div>
+    <div class="modal-dialog" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3 id="viewEmailSubject" class="modal-title">Email Details</h3>
+        <button type="button" class="modal-close" onclick="UI.closeModal('viewEmailModal')">&times;</button>
+      </div>
+      <div class="modal-body" id="viewEmailBodyContent">
+        <!-- Injected via emails.js -->
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js?v=8.0"></script>
+  <script src="js/auth.js?v=8.0"></script>
+  <script src="js/app.js?v=8.0"></script>
+  <script src="js/emails.js?v=8.0"></script>
+</body>
+</html>

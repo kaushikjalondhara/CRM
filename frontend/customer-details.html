@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer 360° Profile — Apex CRM</title>
+  <link rel="icon" type="image/png" href="assets/images/apex-crm-icon.png">
+  <link rel="stylesheet" href="css/style.css?v=8.0">
+  <link rel="stylesheet" href="css/dashboard.css?v=8.0">
+  <link rel="stylesheet" href="css/responsive.css?v=8.0">
+</head>
+<body>
+  <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
+
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside id="crmSidebar" class="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand-logo" title="Apex CRM">
+          <img src="assets/images/apex-crm-logo.png" alt="Apex CRM" class="brand-logo-img">
+        </a>
+      </div>
+
+      <div class="sidebar-content">
+        <div class="nav-section-title">Main Navigation</div>
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="dashboard.html">
+              <span class="nav-icon">📊</span>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item active">
+            <a href="customers.html">
+              <span class="nav-icon">👥</span>
+              <span>Customers</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="leads.html">
+              <span class="nav-icon">🎯</span>
+              <span>Leads</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="deals.html">
+              <span class="nav-icon">💼</span>
+              <span>Deals Pipeline</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="tasks.html">
+              <span class="nav-icon">✅</span>
+              <span>Tasks</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="calls.html">
+              <span class="nav-icon">📞</span>
+              <span>Calls</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="meetings.html">
+              <span class="nav-icon">📅</span>
+              <span>Meetings</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="calendar.html">
+              <span class="nav-icon">🗓️</span>
+              <span>Calendar</span>
+            </a>
+          </li>
+        </ul>
+        <div class="nav-section-title" style="margin-top: 16px;">Business & Billing</div>
+        <ul class="nav-menu">
+          <li class="nav-item" data-permission="products.view">
+            <a href="products.html"><span class="nav-icon">📦</span><span>Products</span></a>
+          </li>
+          <li class="nav-item" data-permission="invoices.view">
+            <a href="invoices.html"><span class="nav-icon">🧾</span><span>Invoices</span></a>
+          </li>
+          <li class="nav-item" data-permission="payments.view">
+            <a href="payments.html"><span class="nav-icon">💳</span><span>Payments</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="emails.html"><span class="nav-icon">✉️</span><span>Emails</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="notifications.html"><span class="nav-icon">🔔</span><span>Notifications</span></a>
+          </li>
+        </ul>
+
+        <div class="nav-section-title" style="margin-top: 16px;">Analytics & System</div>
+        <ul class="nav-menu">
+          <li class="nav-item" data-permission="reports.view">
+            <a href="reports.html"><span class="nav-icon">📈</span><span>Reports</span></a>
+          </li>
+          <li class="nav-item" data-permission="users.view">
+            <a href="users.html"><span class="nav-icon">👤</span><span>Users</span></a>
+          </li>
+          <li class="nav-item" data-permission="users.view">
+            <a href="audit-logs.html"><span class="nav-icon">🛡️</span><span>Audit Logs</span></a>
+          </li>
+          <li class="nav-item" data-permission="settings.view">
+            <a href="settings.html"><span class="nav-icon">⚙️</span><span>Settings</span></a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="user-mini-profile">
+          <div class="avatar">U</div>
+          <div class="user-info">
+            <div class="user-name">User</div>
+            <div class="user-role">Role</div>
+          </div>
+          <a href="#" title="Sign out" style="margin-left: auto; color: var(--text-muted); font-size: 1.1rem;">🚪</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button id="sidebarToggleBtn" class="sidebar-toggle-btn">☰</button>
+          <a href="customers.html" class="btn btn-outline btn-sm">← Back to Customers</a>
+        </div>
+        <div class="topbar-right">
+          <div id="apiStatusBadge" class="api-badge">
+            <span id="apiStatusDot" class="status-dot"></span>
+            <span id="apiStatusText">Checking API...</span>
+          </div>
+          <a href="notifications.html" class="icon-btn" title="Notifications" style="text-decoration: none; position: relative; margin-right: 8px;">
+            <span>🔔</span>
+            <span class="notification-badge-count" style="display: none; position: absolute; top: -4px; right: -4px; background: #e53e3e; color: #fff; font-size: 0.65rem; border-radius: 10px; padding: 1px 5px; font-weight: bold;">0</span>
+          </a>
+          <div class="avatar">U</div>
+        </div>
+      </header>
+
+      <main class="dashboard-content" id="customer360Container">
+        <!-- Customer 360 Header Banner -->
+        <div class="card" style="margin-bottom: 24px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 6px;">
+                <h1 id="c360Name" class="page-title" style="margin-bottom: 0;">Loading Customer...</h1>
+                <span id="c360StatusBadge" class="badge badge-secondary">Status</span>
+              </div>
+              <p id="c360Company" style="color: var(--text-secondary); font-size: var(--font-size-base); margin-bottom: 4px;">Company Name</p>
+              <div style="font-size: var(--font-size-xs); color: var(--text-muted);">
+                Customer Code: <strong id="c360Code" style="color: var(--primary);">—</strong>
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <button class="btn btn-outline btn-sm" onclick="UI.print()">🖨️ Print Profile</button>
+              <span class="hero-badge" style="margin-bottom: 0;">360° Profile</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 360 Financial KPI Summary Cards -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;">
+          <div class="card" style="padding: 16px;">
+            <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 4px;">Total Invoiced</div>
+            <div id="c360TotalInvoiced" style="font-size: 1.3rem; font-weight: 700; color: var(--text-primary);">₹0.00</div>
+          </div>
+          <div class="card" style="padding: 16px;">
+            <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 4px;">Total Collected</div>
+            <div id="c360TotalPaid" style="font-size: 1.3rem; font-weight: 700; color: var(--success);">₹0.00</div>
+          </div>
+          <div class="card" style="padding: 16px;">
+            <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 4px;">Outstanding Balance</div>
+            <div id="c360Outstanding" style="font-size: 1.3rem; font-weight: 700; color: var(--danger);">₹0.00</div>
+          </div>
+          <div class="card" style="padding: 16px;">
+            <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 4px;">Deals Pipeline</div>
+            <div id="c360DealsValue" style="font-size: 1.3rem; font-weight: 700; color: var(--primary);">₹0.00</div>
+          </div>
+        </div>
+
+        <!-- 360 Tabs Navigation -->
+        <div class="tabs-nav">
+          <button class="tab-btn active" data-tab="tabOverview">Overview</button>
+          <button class="tab-btn" data-tab="tabDeals">Deals</button>
+          <button class="tab-btn" data-tab="tabInvoices">Invoices</button>
+          <button class="tab-btn" data-tab="tabPayments">Payments</button>
+          <button class="tab-btn" data-tab="tabTasks">Tasks</button>
+          <button class="tab-btn" data-tab="tabCalls">Calls & Meetings</button>
+          <button class="tab-btn" data-tab="tabTimeline">Timeline</button>
+          <button class="tab-btn" data-tab="tabNotes">Notes & Log</button>
+          <button class="tab-btn" data-tab="tabDocuments">Documents</button>
+        </div>
+
+        <!-- Tab 1: Overview -->
+        <div id="tabOverview" class="tab-pane active">
+          <div class="card">
+            <h3 style="font-size: var(--font-size-md); font-weight: 700; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">Account & Contact Information</h3>
+            <div class="form-grid-3">
+              <div class="info-item">
+                <span class="info-label">Email Address</span>
+                <span id="c360Email" class="info-value">—</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Phone Number</span>
+                <span id="c360Phone" class="info-value">—</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Website</span>
+                <span id="c360Website" class="info-value">—</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Industry</span>
+                <span id="c360Industry" class="info-value">—</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Assigned Representative</span>
+                <span id="c360Assigned" class="info-value">—</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Customer Since</span>
+                <span id="c360CreatedAt" class="info-value">—</span>
+              </div>
+            </div>
+            <div class="info-item" style="margin-top: 14px;">
+              <span class="info-label">Full Address</span>
+              <span id="c360Address" class="info-value">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Deals -->
+        <div id="tabDeals" class="tab-pane">
+          <div class="card" id="c360DealsList">
+            <div class="empty-state"><div class="empty-state-text">Loading deals...</div></div>
+          </div>
+        </div>
+
+        <!-- Tab: Invoices -->
+        <div id="tabInvoices" class="tab-pane">
+          <div class="card" id="c360InvoicesList">
+            <div class="empty-state"><div class="empty-state-text">Loading invoices...</div></div>
+          </div>
+        </div>
+
+        <!-- Tab: Payments -->
+        <div id="tabPayments" class="tab-pane">
+          <div class="card" id="c360PaymentsList">
+            <div class="empty-state"><div class="empty-state-text">Loading payments...</div></div>
+          </div>
+        </div>
+
+        <!-- Tab: Timeline -->
+        <div id="tabTimeline" class="tab-pane">
+          <div class="card" id="c360TimelineList">
+            <div class="empty-state"><div class="empty-state-text">Loading customer activity timeline...</div></div>
+          </div>
+        </div>
+
+
+        <!-- Tab 3: Tasks -->
+        <div id="tabTasks" class="tab-pane">
+          <div class="card" id="c360TasksList">
+            <div class="empty-state"><div class="empty-state-text">Loading tasks...</div></div>
+          </div>
+        </div>
+
+        <!-- Tab 4: Calls & Meetings -->
+        <div id="tabCalls" class="tab-pane">
+          <div class="card" style="margin-bottom: 24px;">
+            <h3 style="font-size: var(--font-size-md); font-weight: 700; margin-bottom: 16px;">Call History</h3>
+            <div id="c360CallsList">
+              <div class="empty-state"><div class="empty-state-text">Loading calls...</div></div>
+            </div>
+          </div>
+          <div class="card">
+            <h3 style="font-size: var(--font-size-md); font-weight: 700; margin-bottom: 16px;">Scheduled Meetings</h3>
+            <div id="c360MeetingsList">
+              <div class="empty-state"><div class="empty-state-text">Loading meetings...</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 5: Notes & Timeline -->
+        <div id="tabNotes" class="tab-pane">
+          <!-- Add Note Box -->
+          <div class="card" style="margin-bottom: 24px;">
+            <h3 style="font-size: var(--font-size-md); font-weight: 700; margin-bottom: 12px;">Add Interaction Note</h3>
+            <form id="addNoteForm">
+              <div class="form-group">
+                <textarea id="noteContent" class="form-control" rows="3" required placeholder="Write a note about a call, discussion, or next step..."></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary btn-sm">Post Note</button>
+            </form>
+          </div>
+
+          <!-- Notes Timeline -->
+          <div class="card">
+            <h3 style="font-size: var(--font-size-md); font-weight: 700; margin-bottom: 20px;">Notes History</h3>
+            <div id="c360NotesTimeline">
+              <div class="empty-state"><div class="empty-state-text">Loading notes...</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 6: Documents -->
+        <div id="tabDocuments" class="tab-pane">
+          <!-- Upload Document Form -->
+          <div class="card" style="margin-bottom: 24px;">
+            <h3 style="font-size: var(--font-size-md); font-weight: 700; margin-bottom: 12px;">Upload Customer Document</h3>
+            <form id="uploadDocForm" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+              <input type="file" id="documentFile" class="form-control" style="max-width: 380px;" required>
+              <button type="submit" class="btn btn-primary btn-sm">Upload Document</button>
+              <span style="font-size: var(--font-size-xs); color: var(--text-muted);">Allowed: PDF, DOC, DOCX, XLS, XLSX, PNG, JPG (Max 16MB)</span>
+            </form>
+          </div>
+
+          <!-- Documents List -->
+          <div class="card" id="c360DocumentsList">
+            <div class="empty-state"><div class="empty-state-text">Loading documents...</div></div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="js/api.js?v=8.0"></script>
+  <script src="js/auth.js?v=8.0"></script>
+  <script src="js/app.js?v=8.0"></script>
+  <script src="js/customers.js?v=8.0"></script>
+</body>
+</html>

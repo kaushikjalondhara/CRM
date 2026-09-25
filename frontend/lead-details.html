@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lead Details & Activities — Apex CRM</title>
+  <link rel="icon" type="image/png" href="assets/images/apex-crm-icon.png">
+  <link rel="stylesheet" href="css/style.css?v=8.0">
+  <link rel="stylesheet" href="css/dashboard.css?v=8.0">
+  <link rel="stylesheet" href="css/responsive.css?v=8.0">
+</head>
+<body>
+  <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
+
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside id="crmSidebar" class="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand-logo" title="Apex CRM">
+          <img src="assets/images/apex-crm-logo.png" alt="Apex CRM" class="brand-logo-img">
+        </a>
+      </div>
+
+      <div class="sidebar-content">
+        <div class="nav-section-title">Main Navigation</div>
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="dashboard.html">
+              <span class="nav-icon">📊</span>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="customers.html">
+              <span class="nav-icon">👥</span>
+              <span>Customers</span>
+            </a>
+          </li>
+          <li class="nav-item active">
+            <a href="leads.html">
+              <span class="nav-icon">🎯</span>
+              <span>Leads</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="deals.html">
+              <span class="nav-icon">💼</span>
+              <span>Deals Pipeline</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="tasks.html">
+              <span class="nav-icon">✅</span>
+              <span>Tasks</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="calls.html">
+              <span class="nav-icon">📞</span>
+              <span>Calls</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="meetings.html">
+              <span class="nav-icon">📅</span>
+              <span>Meetings</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="calendar.html">
+              <span class="nav-icon">🗓️</span>
+              <span>Calendar</span>
+            </a>
+          </li>
+        </ul>
+        <div class="nav-section-title" style="margin-top: 16px;">Business & Billing</div>
+        <ul class="nav-menu">
+          <li class="nav-item" data-permission="products.view">
+            <a href="products.html"><span class="nav-icon">📦</span><span>Products</span></a>
+          </li>
+          <li class="nav-item" data-permission="invoices.view">
+            <a href="invoices.html"><span class="nav-icon">🧾</span><span>Invoices</span></a>
+          </li>
+          <li class="nav-item" data-permission="payments.view">
+            <a href="payments.html"><span class="nav-icon">💳</span><span>Payments</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="emails.html"><span class="nav-icon">✉️</span><span>Emails</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="notifications.html"><span class="nav-icon">🔔</span><span>Notifications</span></a>
+          </li>
+        </ul>
+
+        <div class="nav-section-title" style="margin-top: 16px;">Analytics & System</div>
+        <ul class="nav-menu">
+          <li class="nav-item" data-permission="reports.view">
+            <a href="reports.html"><span class="nav-icon">📈</span><span>Reports</span></a>
+          </li>
+          <li class="nav-item" data-permission="users.view">
+            <a href="users.html"><span class="nav-icon">👤</span><span>Users</span></a>
+          </li>
+          <li class="nav-item" data-permission="users.view">
+            <a href="audit-logs.html"><span class="nav-icon">🛡️</span><span>Audit Logs</span></a>
+          </li>
+          <li class="nav-item" data-permission="settings.view">
+            <a href="settings.html"><span class="nav-icon">⚙️</span><span>Settings</span></a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="user-mini-profile">
+          <div class="avatar">U</div>
+          <div class="user-info">
+            <div class="user-name">User</div>
+            <div class="user-role">Role</div>
+          </div>
+          <a href="#" title="Sign out" style="margin-left: auto; color: var(--text-muted); font-size: 1.1rem;">🚪</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button id="sidebarToggleBtn" class="sidebar-toggle-btn">☰</button>
+          <a href="leads.html" class="btn btn-outline btn-sm">← Back to Leads</a>
+        </div>
+        <div class="topbar-right">
+          <div id="apiStatusBadge" class="api-badge">
+            <span id="apiStatusDot" class="status-dot"></span>
+            <span id="apiStatusText">Checking API...</span>
+          </div>
+          <a href="notifications.html" class="icon-btn" title="Notifications" style="text-decoration: none; position: relative; margin-right: 8px;">
+            <span>🔔</span>
+            <span class="notification-badge-count" style="display: none; position: absolute; top: -4px; right: -4px; background: #e53e3e; color: #fff; font-size: 0.65rem; border-radius: 10px; padding: 1px 5px; font-weight: bold;">0</span>
+          </a>
+          <div class="avatar">U</div>
+        </div>
+      </header>
+
+      <main class="dashboard-content" id="leadDetailsContainer">
+        <!-- Lead Header Banner -->
+        <div class="card" style="margin-bottom: 24px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 6px;">
+                <h1 id="leadDetailName" class="page-title" style="margin-bottom: 0;">Loading Lead...</h1>
+                <span id="leadDetailStatus" class="badge badge-secondary">Status</span>
+              </div>
+              <p id="leadDetailCompany" style="color: var(--text-secondary); font-size: var(--font-size-base); margin-bottom: 0;">Company Name</p>
+            </div>
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <button id="leadConvertBtn" class="btn btn-primary">
+                🔄 Convert to Customer
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Details & Timeline Grid -->
+        <div class="details-grid">
+          <!-- Overview Card -->
+          <div class="card">
+            <h3 style="font-size: var(--font-size-md); font-weight: 700; margin-bottom: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">Lead Information</h3>
+            <div class="info-item">
+              <span class="info-label">Email Address</span>
+              <span id="leadDetailEmail" class="info-value">—</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Phone Number</span>
+              <span id="leadDetailPhone" class="info-value">—</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Lead Source</span>
+              <span id="leadDetailSource" class="info-value" style="text-transform: capitalize;">—</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Priority</span>
+              <span id="leadDetailPriority" class="info-value" style="text-transform: capitalize;">—</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Estimated Value</span>
+              <span id="leadDetailEstValue" class="info-value" style="color: var(--primary); font-weight: 700;">—</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Assigned Representative</span>
+              <span id="leadDetailAssigned" class="info-value">—</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Created Date</span>
+              <span id="leadDetailCreatedAt" class="info-value">—</span>
+            </div>
+          </div>
+
+          <!-- Touchpoint Activities & Log -->
+          <div>
+            <!-- Add Activity Form -->
+            <div class="card" style="margin-bottom: 24px;">
+              <h3 style="font-size: var(--font-size-md); font-weight: 700; margin-bottom: 14px;">Log Touchpoint Activity</h3>
+              <form id="addLeadActivityForm">
+                <div class="form-group">
+                  <label class="form-label" for="activityType">Activity Type</label>
+                  <select id="activityType" class="form-select">
+                    <option value="call">Phone Call</option>
+                    <option value="email">Email Sent / Received</option>
+                    <option value="meeting">Meeting / Demo</option>
+                    <option value="note">Internal Note</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="activityNotes">Notes & Follow-up Details</label>
+                  <textarea id="activityNotes" class="form-control" rows="3" required placeholder="Describe conversation details, feedback, or agreed action items..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm">Log Touchpoint</button>
+              </form>
+            </div>
+
+            <!-- Activities Feed -->
+            <div class="card">
+              <h3 style="font-size: var(--font-size-md); font-weight: 700; margin-bottom: 18px;">Touchpoint History</h3>
+              <div id="leadActivitiesTimeline">
+                <div class="empty-state"><div class="empty-state-text">Loading activities...</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/api.js?v=8.0"></script>
+  <script src="js/auth.js?v=8.0"></script>
+  <script src="js/app.js?v=8.0"></script>
+  <script src="js/leads.js?v=8.0"></script>
+</body>
+</html>

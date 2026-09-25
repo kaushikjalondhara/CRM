@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — Apex CRM</title>
+  <!-- Stylesheets -->
+  <link rel="icon" type="image/png" href="assets/images/apex-crm-icon.png">
+  <link rel="stylesheet" href="css/style.css?v=8.0">
+  <link rel="stylesheet" href="css/login.css?v=8.0">
+  <link rel="stylesheet" href="css/responsive.css?v=8.0">
+</head>
+<body>
+
+  <div class="auth-wrapper">
+    <div class="auth-container">
+      <div class="auth-card">
+        
+        <div class="auth-header">
+          <a href="index.html" class="auth-brand" title="Apex CRM">
+            <img src="assets/images/apex-crm-logo.png" alt="Apex CRM" class="auth-brand-logo">
+          </a>
+          <h1 class="auth-title">Sign In to CRM</h1>
+          <p class="auth-subtitle">Enter your credentials to access your CRM workspace</p>
+        </div>
+
+        <!-- Feedback Alert Container -->
+        <div id="loginAlert" class="alert" role="alert"></div>
+
+        <!-- Login Form -->
+        <form id="loginForm" novalidate>
+          <div class="form-group">
+            <label for="email" class="form-label">Email Address <span style="font-weight: normal; color: var(--text-muted); font-size: 0.8rem;">(e.g., admin@crm.local or admin)</span></label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              class="form-control" 
+              placeholder="admin@crm.local" 
+              required 
+              autocomplete="email"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="password" class="form-label">Password <span style="font-weight: normal; color: var(--text-muted); font-size: 0.8rem;">(e.g., Admin@123456)</span></label>
+            <div class="password-input-wrapper">
+              <input 
+                type="password" 
+                id="password" 
+                name="password" 
+                class="form-control" 
+                placeholder="Admin@123456" 
+                required 
+                autocomplete="current-password"
+              >
+              <button 
+                type="button" 
+                id="togglePasswordBtn" 
+                class="password-toggle-btn" 
+                aria-label="Show password"
+                title="Toggle password visibility"
+              >
+                👁️
+              </button>
+            </div>
+          </div>
+
+          <div class="form-row-between">
+            <label class="checkbox-container">
+              <input type="checkbox" id="rememberMe" name="remember">
+              <span>Remember me</span>
+            </label>
+            <!-- Forgot password link placeholder -->
+            <a href="#" onclick="UI.showToast('Password recovery: Please contact your system administrator.', 'info'); return false;">Forgot password?</a>
+          </div>
+
+          <button type="submit" id="submitLoginBtn" class="btn btn-primary btn-block">Sign In</button>
+        </form>
+
+        <!-- Development Quick-Fill Helper -->
+        <div class="demo-accounts-box">
+          <div class="demo-title">
+            <span>Quick Login Options:</span>
+            <span style="font-weight: normal; color: var(--text-muted);">Pass: [Role]@123456</span>
+          </div>
+          <div class="demo-pills" style="margin-bottom: 10px;">
+            <button type="button" class="demo-pill" onclick="quickFill('admin@crm.local', 'Admin@123456')">Admin</button>
+            <button type="button" class="demo-pill" onclick="quickFill('manager@crm.local', 'Manager@123456')">Manager</button>
+            <button type="button" class="demo-pill" onclick="quickFill('sales@crm.local', 'Sales@123456')">Sales</button>
+            <button type="button" class="demo-pill" onclick="quickFill('staff@crm.local', 'Staff@123456')">Staff</button>
+          </div>
+          <button type="button" class="btn btn-secondary btn-block btn-sm" style="font-size: 0.85rem; padding: 8px 12px; cursor: pointer; width: 100%; border: 1px dashed var(--primary); background: #f0fdf4; color: #166534; font-weight: 600;" onclick="oneClickAdminLogin()">⚡ 1-Click Login as Admin</button>
+        </div>
+
+        <div class="auth-footer">
+          <p>Protected by Apex Enterprise Security &bull; <a href="index.html">Back to Home</a></p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/api.js?v=8.0"></script>
+  <script src="js/auth.js?v=8.0"></script>
+  <script src="js/app.js?v=8.0"></script>
+  <script>
+    function quickFill(email, password) {
+      const emailEl = document.getElementById('email');
+      const passEl = document.getElementById('password');
+      if (emailEl) emailEl.value = email;
+      if (passEl) passEl.value = password;
+      const alertBox = document.getElementById('loginAlert');
+      if (alertBox) {
+        alertBox.className = 'alert';
+        alertBox.textContent = '';
+      }
+    }
+
+    function oneClickAdminLogin() {
+      quickFill('admin@crm.local', 'Admin@123456');
+      setTimeout(() => {
+        const form = document.getElementById('loginForm');
+        if (form) {
+          form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+        }
+      }, 50);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. If already authenticated with valid token, redirect straight to dashboard
+      if (window.Auth) {
+        window.Auth.redirectIfAuthenticated();
+        window.Auth.initLoginForm('loginForm', 'loginAlert');
+      }
+
+      // 2. Show/Hide Password toggle handler
+      const toggleBtn = document.getElementById('togglePasswordBtn');
+      const passInput = document.getElementById('password');
+      if (toggleBtn && passInput) {
+        toggleBtn.addEventListener('click', () => {
+          const isPassword = passInput.type === 'password';
+          passInput.type = isPassword ? 'text' : 'password';
+          toggleBtn.textContent = isPassword ? '🙈' : '👁️';
+          toggleBtn.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+        });
+      }
+    });
+  </script>
+</body>
+</html>

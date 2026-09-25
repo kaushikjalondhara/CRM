@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notifications Center — Apex CRM</title>
+  <link rel="icon" type="image/png" href="assets/images/apex-crm-icon.png">
+  <link rel="stylesheet" href="css/style.css?v=8.0">
+  <link rel="stylesheet" href="css/dashboard.css?v=8.0">
+  <link rel="stylesheet" href="css/responsive.css?v=8.0">
+  <style>
+    .notif-card {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      padding: 16px;
+      border-radius: 8px;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      margin-bottom: 12px;
+      transition: all 0.2s ease;
+    }
+    .notif-card.unread {
+      background: #f7fafc;
+      border-left: 4px solid #073472;
+    }
+    .notif-icon-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+      background: #edf2f7;
+    }
+    .notif-body { flex: 1; }
+    .notif-title { font-weight: 600; color: #2d3748; margin-bottom: 4px; font-size: 0.95rem; }
+    .notif-msg { color: #4a5568; font-size: 0.9rem; line-height: 1.4; }
+    .notif-time { font-size: 0.8rem; color: #a0aec0; margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
+
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside id="crmSidebar" class="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand-logo" title="Apex CRM">
+          <img src="assets/images/apex-crm-logo.png" alt="Apex CRM" class="brand-logo-img">
+        </a>
+      </div>
+
+      <div class="sidebar-content">
+        <div class="nav-section-title">Main Navigation</div>
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="dashboard.html"><span class="nav-icon">📊</span><span>Dashboard</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="customers.html"><span class="nav-icon">👥</span><span>Customers</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="leads.html"><span class="nav-icon">🎯</span><span>Leads</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="deals.html"><span class="nav-icon">💼</span><span>Deals Pipeline</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="tasks.html"><span class="nav-icon">✅</span><span>Tasks</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="calls.html"><span class="nav-icon">📞</span><span>Calls</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="meetings.html"><span class="nav-icon">📅</span><span>Meetings</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="calendar.html">
+              <span class="nav-icon">🗓️</span>
+              <span>Calendar</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="nav-section-title" style="margin-top: 16px;">Business & Billing</div>
+        <ul class="nav-menu">
+          <li class="nav-item" data-permission="products.view">
+            <a href="products.html"><span class="nav-icon">📦</span><span>Products</span></a>
+          </li>
+          <li class="nav-item" data-permission="invoices.view">
+            <a href="invoices.html"><span class="nav-icon">🧾</span><span>Invoices</span></a>
+          </li>
+          <li class="nav-item" data-permission="payments.view">
+            <a href="payments.html"><span class="nav-icon">💳</span><span>Payments</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="emails.html"><span class="nav-icon">✉️</span><span>Emails</span></a>
+          </li>
+          <li class="nav-item active">
+            <a href="notifications.html"><span class="nav-icon">🔔</span><span>Notifications</span></a>
+          </li>
+        </ul>
+
+        <div class="nav-section-title" style="margin-top: 16px;">Analytics & System</div>
+        <ul class="nav-menu">
+          <li class="nav-item" data-permission="reports.view">
+            <a href="reports.html"><span class="nav-icon">📈</span><span>Reports</span></a>
+          </li>
+          <li class="nav-item" data-permission="users.view">
+            <a href="users.html"><span class="nav-icon">👤</span><span>Users</span></a>
+          </li>
+          <li class="nav-item" data-permission="users.view">
+            <a href="audit-logs.html"><span class="nav-icon">🛡️</span><span>Audit Logs</span></a>
+          </li>
+          <li class="nav-item" data-permission="settings.view">
+            <a href="settings.html"><span class="nav-icon">⚙️</span><span>Settings</span></a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="user-mini-profile">
+          <div class="avatar">U</div>
+          <div class="user-info">
+            <span class="user-name">Loading...</span>
+            <span class="user-role">...</span>
+          </div>
+          <a href="#" class="logout-link" title="Sign out" style="margin-left: auto; text-decoration: none; font-size: 1.1rem;">🚪</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      <header class="top-navbar">
+        <div class="navbar-left">
+          <button id="sidebarToggleBtn" class="sidebar-toggle" aria-label="Toggle Sidebar">☰</button>
+          <div class="page-title-box">
+            <h1 class="page-title">Notifications Center</h1>
+            <p class="page-subtitle">Real-time alerts for payments, assignments, meetings, and system events.</p>
+          </div>
+        </div>
+        <div class="navbar-right">
+          <button id="markAllReadBtn" class="btn btn-secondary">
+            <span>✓</span> Mark All Read
+          </button>
+        </div>
+      </header>
+
+      <main class="content-area">
+        <!-- Filter Controls -->
+        <div class="card" style="margin-bottom: 20px; padding: 16px;">
+          <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+              <select id="typeFilter" class="form-control" style="width: 170px;">
+                <option value="">All Notification Types</option>
+                <option value="payment">💳 Payments</option>
+                <option value="invoice">🧾 Invoices</option>
+                <option value="task">✅ Tasks</option>
+                <option value="meeting">📅 Meetings</option>
+                <option value="call">📞 Calls</option>
+                <option value="lead">🎯 Leads</option>
+                <option value="deal">💼 Deals</option>
+                <option value="system">⚙️ System</option>
+              </select>
+              <select id="readFilter" class="form-control" style="width: 150px;">
+                <option value="">All Statuses</option>
+                <option value="0">Unread Only</option>
+                <option value="1">Read Only</option>
+              </select>
+            </div>
+            <div style="font-size: 0.875rem; color: #718096;">
+              Unread: <strong id="unreadBadgeText" style="color: #c53030;">0</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notification List -->
+        <div id="notificationsContainer">
+          <div style="text-align: center; padding: 48px 16px; color: #718096;">
+            Loading notifications...
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <div id="paginationContainer" style="display: flex; justify-content: space-between; align-items: center; padding: 16px; margin-top: 16px;">
+          <div id="paginationInfo" style="font-size: 0.875rem; color: #718096;">Showing 0 of 0</div>
+          <div style="display: flex; gap: 8px;">
+            <button id="prevPageBtn" class="btn btn-secondary btn-sm" disabled>Previous</button>
+            <button id="nextPageBtn" class="btn btn-secondary btn-sm" disabled>Next</button>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/api.js?v=8.0"></script>
+  <script src="js/auth.js?v=8.0"></script>
+  <script src="js/app.js?v=8.0"></script>
+  <script src="js/notifications.js?v=8.0"></script>
+</body>
+</html>

@@ -1,0 +1,2 @@
+/* Modal Window Overlay & Sticky Action Footer */
+.modal-body { max-height: calc(100vh - 130px); overflow-y: auto; }

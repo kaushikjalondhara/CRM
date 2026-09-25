@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Users & Role Permissions — Apex CRM</title>
+  <link rel="icon" type="image/png" href="assets/images/apex-crm-icon.png">
+  <link rel="stylesheet" href="css/style.css?v=8.0">
+  <link rel="stylesheet" href="css/dashboard.css?v=8.0">
+  <link rel="stylesheet" href="css/responsive.css?v=8.0">
+  <style>
+    .user-tab-nav {
+      display: flex;
+      gap: 8px;
+      border-bottom: 2px solid #edf2f7;
+      margin-bottom: 20px;
+    }
+    .user-tab-btn {
+      padding: 10px 18px;
+      background: none;
+      border: none;
+      font-weight: 600;
+      color: #718096;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      font-size: 0.95rem;
+    }
+    .user-tab-btn.active {
+      color: #073472;
+      border-bottom-color: #FD6713;
+    }
+    .user-panel { display: none; }
+    .user-panel.active { display: block; }
+    .permission-group-card {
+      background: #f7fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .permission-checkbox-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .permission-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: #2d3748;
+    }
+  </style>
+</head>
+<body>
+  <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
+
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside id="crmSidebar" class="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand-logo" title="Apex CRM">
+          <img src="assets/images/apex-crm-logo.png" alt="Apex CRM" class="brand-logo-img">
+        </a>
+      </div>
+
+      <div class="sidebar-content">
+        <div class="nav-section-title">Main Navigation</div>
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="dashboard.html"><span class="nav-icon">📊</span><span>Dashboard</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="customers.html"><span class="nav-icon">👥</span><span>Customers</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="leads.html"><span class="nav-icon">🎯</span><span>Leads</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="deals.html"><span class="nav-icon">💼</span><span>Deals Pipeline</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="tasks.html"><span class="nav-icon">✅</span><span>Tasks</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="calls.html"><span class="nav-icon">📞</span><span>Calls</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="meetings.html"><span class="nav-icon">📅</span><span>Meetings</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="calendar.html">
+              <span class="nav-icon">🗓️</span>
+              <span>Calendar</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="nav-section-title" style="margin-top: 16px;">Business & Billing</div>
+        <ul class="nav-menu">
+          <li class="nav-item" data-permission="products.view">
+            <a href="products.html"><span class="nav-icon">📦</span><span>Products</span></a>
+          </li>
+          <li class="nav-item" data-permission="invoices.view">
+            <a href="invoices.html"><span class="nav-icon">🧾</span><span>Invoices</span></a>
+          </li>
+          <li class="nav-item" data-permission="payments.view">
+            <a href="payments.html"><span class="nav-icon">💳</span><span>Payments</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="emails.html"><span class="nav-icon">✉️</span><span>Emails</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="notifications.html"><span class="nav-icon">🔔</span><span>Notifications</span></a>
+          </li>
+        </ul>
+
+        <div class="nav-section-title" style="margin-top: 16px;">Analytics & System</div>
+        <ul class="nav-menu">
+          <li class="nav-item" data-permission="reports.view">
+            <a href="reports.html"><span class="nav-icon">📈</span><span>Reports</span></a>
+          </li>
+          <li class="nav-item active" data-permission="users.view">
+            <a href="users.html"><span class="nav-icon">👤</span><span>Users</span></a>
+          </li>
+          <li class="nav-item" data-permission="users.view">
+            <a href="audit-logs.html"><span class="nav-icon">🛡️</span><span>Audit Logs</span></a>
+          </li>
+          <li class="nav-item" data-permission="settings.view">
+            <a href="settings.html"><span class="nav-icon">⚙️</span><span>Settings</span></a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="user-mini-profile">
+          <div class="avatar">U</div>
+          <div class="user-info">
+            <span class="user-name">Loading...</span>
+            <span class="user-role">...</span>
+          </div>
+          <a href="#" class="logout-link" title="Sign out" style="margin-left: auto; text-decoration: none; font-size: 1.1rem;">🚪</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      <header class="top-navbar">
+        <div class="navbar-left">
+          <button id="sidebarToggleBtn" class="sidebar-toggle" aria-label="Toggle Sidebar">☰</button>
+          <div class="page-title-box">
+            <h1 class="page-title">Users & Access Control</h1>
+            <p class="page-subtitle">Manage company staff accounts, role assignments, and permission matrices.</p>
+          </div>
+        </div>
+        <div class="navbar-right">
+          <a href="notifications.html" class="btn btn-secondary" style="position: relative; padding: 6px 12px; margin-right: 8px;" title="Notifications">
+            🔔 <span class="notification-badge-count" style="display: none; position: absolute; top: -6px; right: -6px; background: #e53e3e; color: #fff; font-size: 0.7rem; border-radius: 10px; padding: 2px 6px; font-weight: bold;">0</span>
+          </a>
+          <button id="addUserBtn" class="btn btn-primary" data-permission="users.create">
+            <span>+</span> Add Employee
+          </button>
+        </div>
+      </header>
+
+      <main class="content-area">
+        <!-- Tabs -->
+        <div class="user-tab-nav">
+          <button class="user-tab-btn active" onclick="switchUserTab('usersDirectoryPanel', this)">👤 Employee Directory</button>
+          <button class="user-tab-btn" id="rolesMatrixTabBtn" onclick="switchUserTab('rolesMatrixPanel', this)">🔐 Roles & Permissions Matrix</button>
+        </div>
+
+        <!-- 1. Users Directory Panel -->
+        <div id="usersDirectoryPanel" class="user-panel active">
+          <!-- Filter Bar -->
+          <div class="card" style="margin-bottom: 20px; padding: 16px;">
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+              <div style="flex: 1; min-width: 220px;">
+                <input type="text" id="searchInput" class="form-control" placeholder="Search by name, email, or phone...">
+              </div>
+              <div style="width: 170px;">
+                <select id="roleFilter" class="form-control">
+                  <option value="">All Roles</option>
+                </select>
+              </div>
+              <div style="width: 150px;">
+                <select id="statusFilter" class="form-control">
+                  <option value="">All Statuses</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                  <option value="suspended">Suspended</option>
+                </select>
+              </div>
+              <div>
+                <button id="clearFiltersBtn" class="btn btn-secondary">Reset</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Users Table -->
+          <div class="card">
+            <div class="table-responsive">
+              <table class="data-table" id="usersTable">
+                <thead>
+                  <tr>
+                    <th>Employee</th>
+                    <th>Email Address</th>
+                    <th>Phone</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Last Active</th>
+                    <th style="text-align: right;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                  <tr>
+                    <td colspan="7" style="text-align: center; padding: 32px; color: #718096;">
+                      Loading employees...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Pagination -->
+            <div id="paginationContainer" style="display: flex; justify-content: space-between; align-items: center; padding: 16px; border-top: 1px solid #edf2f7;">
+              <div id="paginationInfo" style="font-size: 0.875rem; color: #718096;">Showing 0 of 0</div>
+              <div style="display: flex; gap: 8px;">
+                <button id="prevPageBtn" class="btn btn-secondary btn-sm" disabled>Previous</button>
+                <button id="nextPageBtn" class="btn btn-secondary btn-sm" disabled>Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Roles & Permissions Matrix Panel -->
+        <div id="rolesMatrixPanel" class="user-panel">
+          <div class="card" style="padding: 20px; margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+              <div>
+                <h3 style="margin: 0; font-size: 1.15rem; color: #2d3748;">Configure Permissions for Role</h3>
+                <p style="margin: 4px 0 0; font-size: 0.85rem; color: #718096;">Changes take effect immediately across all users assigned to the selected role.</p>
+              </div>
+              <div style="display: flex; gap: 10px; align-items: center;">
+                <select id="roleSelect" class="form-control" style="width: 200px; font-weight: 600;"></select>
+                <button id="savePermissionsBtn" class="btn btn-primary">Save Changes</button>
+              </div>
+            </div>
+
+            <div id="permissionMatrixContainer">
+              <div style="text-align: center; padding: 48px; color: #718096;">Loading permission matrix...</div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Add / Edit User Modal -->
+  <div id="userModal" class="modal">
+    <div class="modal-backdrop" onclick="UI.closeModal('userModal')"></div>
+    <div class="modal-dialog" style="max-width: 580px;">
+      <div class="modal-header">
+        <h3 id="userModalTitle" class="modal-title">Add New Employee</h3>
+        <button type="button" class="modal-close" onclick="UI.closeModal('userModal')">&times;</button>
+      </div>
+      <form id="userForm">
+        <input type="hidden" id="userId">
+        <div class="modal-body">
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="userFirstName">First Name *</label>
+              <input type="text" id="userFirstName" class="form-control" required placeholder="John">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="userLastName">Last Name *</label>
+              <input type="text" id="userLastName" class="form-control" required placeholder="Doe">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="userEmail">Email Address *</label>
+              <input type="email" id="userEmail" class="form-control" required placeholder="john.doe@company.com">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="userPhone">Phone Number</label>
+              <input type="tel" id="userPhone" class="form-control" placeholder="+91 98765 43210">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="userRole">Assigned Role *</label>
+              <select id="userRole" class="form-control" required></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="userStatus">Status</label>
+              <select id="userStatus" class="form-control">
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="suspended">Suspended</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="userPassword" id="passwordLabel">Password *</label>
+            <input type="password" id="userPassword" class="form-control" placeholder="Min. 6 characters">
+            <small id="passwordHelp" style="color: var(--text-muted); display: none;">Leave blank to keep existing password.</small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="UI.closeModal('userModal')">Cancel</button>
+          <button type="submit" id="saveUserBtn" class="btn btn-primary">Save Employee</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/api.js?v=8.0"></script>
+  <script src="js/auth.js?v=8.0"></script>
+  <script src="js/app.js?v=8.0"></script>
+  <script src="js/users.js?v=8.0"></script>
+</body>
+</html>

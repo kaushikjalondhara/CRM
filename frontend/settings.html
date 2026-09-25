@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings — Apex CRM</title>
+  <link rel="icon" type="image/png" href="assets/images/apex-crm-icon.png">
+  <link rel="stylesheet" href="css/style.css?v=8.0">
+  <link rel="stylesheet" href="css/dashboard.css?v=8.0">
+  <link rel="stylesheet" href="css/responsive.css?v=8.0">
+</head>
+<body>
+  <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
+
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside id="crmSidebar" class="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand-logo" title="Apex CRM">
+          <img src="assets/images/apex-crm-logo.png" alt="Apex CRM" class="brand-logo-img">
+        </a>
+      </div>
+
+      <div class="sidebar-content">
+        <div class="nav-section-title">Main Navigation</div>
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="dashboard.html"><span class="nav-icon">📊</span><span>Dashboard</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="customers.html"><span class="nav-icon">👥</span><span>Customers</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="leads.html"><span class="nav-icon">🎯</span><span>Leads</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="deals.html"><span class="nav-icon">💼</span><span>Deals Pipeline</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="tasks.html"><span class="nav-icon">✅</span><span>Tasks</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="calls.html"><span class="nav-icon">📞</span><span>Calls</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="meetings.html"><span class="nav-icon">📅</span><span>Meetings</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="calendar.html">
+              <span class="nav-icon">🗓️</span>
+              <span>Calendar</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="nav-section-title" style="margin-top: 16px;">Business & Billing</div>
+        <ul class="nav-menu">
+          <li class="nav-item" data-permission="products.view">
+            <a href="products.html"><span class="nav-icon">📦</span><span>Products</span></a>
+          </li>
+          <li class="nav-item" data-permission="invoices.view">
+            <a href="invoices.html"><span class="nav-icon">🧾</span><span>Invoices</span></a>
+          </li>
+          <li class="nav-item" data-permission="payments.view">
+            <a href="payments.html"><span class="nav-icon">💳</span><span>Payments</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="emails.html"><span class="nav-icon">✉️</span><span>Emails</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="notifications.html"><span class="nav-icon">🔔</span><span>Notifications</span></a>
+          </li>
+        </ul>
+
+        <div class="nav-section-title" style="margin-top: 16px;">Analytics & System</div>
+        <ul class="nav-menu">
+          <li class="nav-item" data-permission="reports.view">
+            <a href="reports.html"><span class="nav-icon">📈</span><span>Reports</span></a>
+          </li>
+          <li class="nav-item" data-permission="users.view">
+            <a href="users.html"><span class="nav-icon">👤</span><span>Users</span></a>
+          </li>
+          <li class="nav-item" data-permission="users.view">
+            <a href="audit-logs.html"><span class="nav-icon">🛡️</span><span>Audit Logs</span></a>
+          </li>
+          <li class="nav-item active" data-permission="settings.view">
+            <a href="settings.html"><span class="nav-icon">⚙️</span><span>Settings</span></a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="user-mini-profile">
+          <div class="avatar">U</div>
+          <div class="user-info">
+            <span class="user-name">Loading...</span>
+            <span class="user-role">...</span>
+          </div>
+          <a href="#" class="logout-link" title="Sign out" style="margin-left: auto; text-decoration: none; font-size: 1.1rem;">🚪</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      <header class="top-navbar">
+        <div class="navbar-left">
+          <button id="sidebarToggleBtn" class="sidebar-toggle" aria-label="Toggle Sidebar">☰</button>
+          <div class="page-title-box">
+            <h1 class="page-title">System Settings</h1>
+            <p class="page-subtitle">Configure company information, regional localization, and invoicing parameters.</p>
+          </div>
+        </div>
+        <div class="navbar-right">
+          <a href="notifications.html" class="btn btn-secondary" style="position: relative; padding: 6px 12px;" title="Notifications">
+            🔔 <span class="notification-badge-count" style="display: none; position: absolute; top: -6px; right: -6px; background: #e53e3e; color: #fff; font-size: 0.7rem; border-radius: 10px; padding: 2px 6px; font-weight: bold;">0</span>
+          </a>
+        </div>
+      </header>
+
+      <main class="content-area">
+        <form id="settingsForm">
+          <!-- Company Profile Card -->
+          <div class="card" style="padding: 24px; margin-bottom: 24px;">
+            <h3 style="margin: 0 0 16px; font-size: 1.15rem; color: #073472;">🏢 Organization Profile</h3>
+            <div class="form-row">
+              <div class="form-group" style="flex: 1;">
+                <label for="companyName">Company Name *</label>
+                <input type="text" id="companyName" class="form-control" required>
+              </div>
+              <div class="form-group" style="flex: 1;">
+                <label for="companyEmail">Company Email *</label>
+                <input type="email" id="companyEmail" class="form-control" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group" style="flex: 1;">
+                <label for="companyPhone">Phone Number</label>
+                <input type="tel" id="companyPhone" class="form-control">
+              </div>
+              <div class="form-group" style="flex: 2;">
+                <label for="companyAddress">Physical Address</label>
+                <input type="text" id="companyAddress" class="form-control">
+              </div>
+            </div>
+          </div>
+
+          <!-- Localization & Financial Card -->
+          <div class="card" style="padding: 24px; margin-bottom: 24px;">
+            <h3 style="margin: 0 0 16px; font-size: 1.15rem; color: #073472;">🌐 Localization & Currency</h3>
+            <div class="form-row">
+              <div class="form-group" style="flex: 1;">
+                <label for="currencyCode">Currency</label>
+                <select id="currencyCode" class="form-control">
+                  <option value="INR">INR (Indian Rupee)</option>
+                  <option value="USD">USD (US Dollar)</option>
+                  <option value="EUR">EUR (Euro)</option>
+                  <option value="GBP">GBP (British Pound)</option>
+                </select>
+              </div>
+              <div class="form-group" style="flex: 1;">
+                <label for="currencySymbol">Currency Symbol</label>
+                <input type="text" id="currencySymbol" class="form-control" placeholder="₹, $, etc.">
+              </div>
+              <div class="form-group" style="flex: 1;">
+                <label for="dateFormat">Date Format</label>
+                <select id="dateFormat" class="form-control">
+                  <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                  <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+                  <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                </select>
+              </div>
+              <div class="form-group" style="flex: 1;">
+                <label for="timezone">Timezone</label>
+                <select id="timezone" class="form-control">
+                  <option value="Asia/Kolkata">Asia/Kolkata (IST)</option>
+                  <option value="UTC">UTC</option>
+                  <option value="America/New_York">America/New_York (EST)</option>
+                  <option value="Europe/London">Europe/London (GMT)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Invoicing Parameters -->
+          <div class="card" style="padding: 24px; margin-bottom: 24px;">
+            <h3 style="margin: 0 0 16px; font-size: 1.15rem; color: #073472;">🧾 Invoicing Parameters</h3>
+            <div class="form-row">
+              <div class="form-group" style="flex: 1;">
+                <label for="invoicePrefix">Invoice Number Prefix</label>
+                <input type="text" id="invoicePrefix" class="form-control" placeholder="e.g. INV">
+                <small style="color: #718096;">Used when auto-generating bill numbers.</small>
+              </div>
+              <div class="form-group" style="flex: 1;">
+                <label for="defaultTax">Default Tax Rate (%)</label>
+                <input type="number" id="defaultTax" class="form-control" step="0.01" min="0" max="100">
+              </div>
+            </div>
+          </div>
+
+          <!-- Database Backup & Disaster Recovery Card -->
+          <div class="card" style="padding: 24px; margin-bottom: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+              <div>
+                <h3 style="margin: 0 0 4px; font-size: 1.15rem; color: #073472;">💾 Database Backups & Recovery</h3>
+                <p style="margin: 0; font-size: 0.85rem; color: var(--text-secondary);">Create on-demand SQL snapshot dumps and perform disaster recovery restorations.</p>
+              </div>
+              <button type="button" id="btnCreateBackup" class="btn btn-primary btn-sm">+ Create Backup Now</button>
+            </div>
+
+            <div style="overflow-x: auto;">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Backup File</th>
+                    <th>Size</th>
+                    <th>Created At</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="backupsTableBody">
+                  <tr><td colspan="5" style="text-align: center; padding: 20px;">Loading backup archives...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Security Note -->
+          <div style="background: #ebf8ff; border: 1px solid #bee3f8; border-radius: 8px; padding: 16px; margin-bottom: 24px; font-size: 0.85rem; color: #2b6cb0;">
+            <strong>🔒 Security Assurance:</strong> Sensitive secrets such as database passwords, JWT signing keys, and SMTP server passwords are never stored in the database or transmitted to the browser. They remain strictly secured in the server-side <code>.env</code> file.
+          </div>
+
+          <!-- Action Button -->
+          <div style="display: flex; justify-content: flex-end;">
+            <button type="submit" id="saveSettingsBtn" class="btn btn-primary" data-permission="settings.update" style="padding: 10px 24px; font-size: 1rem;">
+              Save Configuration
+            </button>
+          </div>
+        </form>
+      </main>
+    </div>
+  </div>
+
+  <!-- Restore Confirmation Modal -->
+  <div class="modal" id="restoreBackupModal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 class="modal-title" style="color: var(--danger);">⚠️ Confirm Database Restore</h3>
+        <button class="modal-close" onclick="UI.closeModal('restoreBackupModal')">&times;</button>
+      </div>
+      <form id="restoreBackupForm">
+        <input type="hidden" id="restoreBackupId">
+        <div class="modal-body">
+          <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 14px;">
+            Restoring from <strong id="restoreBackupFilename">—</strong> will overwrite the current live database with the snapshot state. All changes made after this backup was taken will be replaced.
+          </p>
+          <div class="form-group">
+            <label class="form-label" for="confirmRestoreCode">Type <strong>RESTORE</strong> below to proceed:</label>
+            <input type="text" id="confirmRestoreCode" class="form-control" required placeholder="Type RESTORE">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline btn-sm" onclick="UI.closeModal('restoreBackupModal')">Cancel</button>
+          <button type="submit" id="confirmRestoreBtn" class="btn btn-danger btn-sm">Overwrite & Restore</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/api.js?v=8.0"></script>
+  <script src="js/auth.js?v=8.0"></script>
+  <script src="js/app.js?v=8.0"></script>
+  <script src="js/settings.js?v=8.0"></script>
+</body>
+</html>
+

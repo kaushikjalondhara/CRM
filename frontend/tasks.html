@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tasks & Reminders — Apex CRM</title>
+  <link rel="icon" type="image/png" href="assets/images/apex-crm-icon.png">
+  <link rel="stylesheet" href="css/style.css?v=8.0">
+  <link rel="stylesheet" href="css/dashboard.css?v=8.0">
+  <link rel="stylesheet" href="css/responsive.css?v=8.0">
+</head>
+<body>
+  <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
+
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside id="crmSidebar" class="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="brand-logo" title="Apex CRM">
+          <img src="assets/images/apex-crm-logo.png" alt="Apex CRM" class="brand-logo-img">
+        </a>
+      </div>
+
+      <div class="sidebar-content">
+        <div class="nav-section-title">Main Navigation</div>
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="dashboard.html">
+              <span class="nav-icon">📊</span>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="customers.html">
+              <span class="nav-icon">👥</span>
+              <span>Customers</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="leads.html">
+              <span class="nav-icon">🎯</span>
+              <span>Leads</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="deals.html">
+              <span class="nav-icon">💼</span>
+              <span>Deals Pipeline</span>
+            </a>
+          </li>
+          <li class="nav-item active">
+            <a href="tasks.html">
+              <span class="nav-icon">✅</span>
+              <span>Tasks</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="calls.html">
+              <span class="nav-icon">📞</span>
+              <span>Calls</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="meetings.html">
+              <span class="nav-icon">📅</span>
+              <span>Meetings</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="calendar.html">
+              <span class="nav-icon">🗓️</span>
+              <span>Calendar</span>
+            </a>
+          </li>
+        </ul>
+        <div class="nav-section-title" style="margin-top: 16px;">Business & Billing</div>
+        <ul class="nav-menu">
+          <li class="nav-item" data-permission="products.view">
+            <a href="products.html"><span class="nav-icon">📦</span><span>Products</span></a>
+          </li>
+          <li class="nav-item" data-permission="invoices.view">
+            <a href="invoices.html"><span class="nav-icon">🧾</span><span>Invoices</span></a>
+          </li>
+          <li class="nav-item" data-permission="payments.view">
+            <a href="payments.html"><span class="nav-icon">💳</span><span>Payments</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="emails.html"><span class="nav-icon">✉️</span><span>Emails</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="notifications.html"><span class="nav-icon">🔔</span><span>Notifications</span></a>
+          </li>
+        </ul>
+
+        <div class="nav-section-title" style="margin-top: 16px;">Analytics & System</div>
+        <ul class="nav-menu">
+          <li class="nav-item" data-permission="reports.view">
+            <a href="reports.html"><span class="nav-icon">📈</span><span>Reports</span></a>
+          </li>
+          <li class="nav-item" data-permission="users.view">
+            <a href="users.html"><span class="nav-icon">👤</span><span>Users</span></a>
+          </li>
+          <li class="nav-item" data-permission="users.view">
+            <a href="audit-logs.html"><span class="nav-icon">🛡️</span><span>Audit Logs</span></a>
+          </li>
+          <li class="nav-item" data-permission="settings.view">
+            <a href="settings.html"><span class="nav-icon">⚙️</span><span>Settings</span></a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="user-mini-profile">
+          <div class="avatar">U</div>
+          <div class="user-info">
+            <div class="user-name">User</div>
+            <div class="user-role">Role</div>
+          </div>
+          <a href="#" title="Sign out" style="margin-left: auto; color: var(--text-muted); font-size: 1.1rem;">🚪</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button id="sidebarToggleBtn" class="sidebar-toggle-btn">☰</button>
+          <span style="font-weight: 600; font-size: 1.1rem; color: var(--text-primary);">Task Management</span>
+        </div>
+        <div class="topbar-right">
+          <div id="apiStatusBadge" class="api-badge">
+            <span id="apiStatusDot" class="status-dot"></span>
+            <span id="apiStatusText">Checking API...</span>
+          </div>
+          <a href="notifications.html" class="icon-btn" title="Notifications" style="text-decoration: none; position: relative; margin-right: 8px;">
+            <span>🔔</span>
+            <span class="notification-badge-count" style="display: none; position: absolute; top: -4px; right: -4px; background: #e53e3e; color: #fff; font-size: 0.65rem; border-radius: 10px; padding: 1px 5px; font-weight: bold;">0</span>
+          </a>
+          <div class="avatar">U</div>
+        </div>
+      </header>
+
+      <main class="dashboard-content">
+        <!-- Page Header -->
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Tasks & Follow-ups</h1>
+            <p class="page-subtitle">Track deadlines, action items, and team assignments</p>
+          </div>
+          <div class="toolbar-actions" style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <div class="dropdown" style="display: inline-block; position: relative;">
+              <button type="button" class="btn btn-outline" id="exportBtn" onclick="this.nextElementSibling.classList.toggle('show')">
+                <span>📤</span> Export ▾
+              </button>
+              <div class="dropdown-menu" style="display: none; position: absolute; right: 0; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: var(--radius-sm); box-shadow: var(--shadow-md); min-width: 140px; z-index: 100;">
+                <a href="#" class="dropdown-item" style="display: block; padding: 8px 14px; text-decoration: none; color: var(--text-primary); font-size: 0.85rem;" onclick="UI.exportData('tasks', 'csv'); this.parentElement.classList.remove('show'); return false;">📄 CSV (.csv)</a>
+                <a href="#" class="dropdown-item" style="display: block; padding: 8px 14px; text-decoration: none; color: var(--text-primary); font-size: 0.85rem;" onclick="UI.exportData('tasks', 'xlsx'); this.parentElement.classList.remove('show'); return false;">📊 Excel (.xlsx)</a>
+              </div>
+            </div>
+            <button type="button" class="btn btn-outline" onclick="UI.print()" title="Print Tasks">
+              <span>🖨️</span> Print
+            </button>
+            <button class="btn btn-primary" id="addTaskBtn">
+              <span>+</span> Add Task
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Toolbar -->
+        <div class="toolbar">
+          <div class="toolbar-filters">
+            <select id="taskStatusFilter" class="form-select" style="width: 170px;">
+              <option value="">All Statuses</option>
+              <option value="pending">Pending</option>
+              <option value="in_progress">In Progress</option>
+              <option value="completed">Completed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+            <select id="taskPriorityFilter" class="form-select" style="width: 170px;">
+              <option value="">All Priorities</option>
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+              <option value="urgent">Urgent</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Bulk Actions Floating Bar -->
+        <div id="bulkActionsToolbar" class="bulk-actions-toolbar">
+          <div class="bulk-actions-left">
+            <span>Selected <span id="bulkSelectedCount" class="bulk-count-badge">0</span> tasks</span>
+          </div>
+          <div class="bulk-actions-right">
+            <button type="button" class="btn btn-secondary btn-sm" id="bulkAssignBtn">👤 Assign</button>
+            <button type="button" class="btn btn-secondary btn-sm" id="bulkStatusBtn">🔄 Status</button>
+            <button type="button" class="btn btn-danger btn-sm" id="bulkDeleteBtn">🗑 Delete</button>
+          </div>
+        </div>
+
+        <!-- Table Card -->
+        <div class="table-card">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th style="width: 40px; text-align: center;"><input type="checkbox" id="selectAll" title="Select All"></th>
+                  <th>Task Title & Details</th>
+                  <th>Priority</th>
+                  <th>Status</th>
+                  <th>Due Date</th>
+                  <th>Assigned To</th>
+                  <th style="text-align: right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="taskTableBody">
+                <tr><td colspan="7" style="text-align: center; padding: 24px;">Loading tasks...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Create / Edit Task Modal -->
+  <div id="taskModal" class="modal">
+    <div class="modal-backdrop" onclick="UI.closeModal('taskModal')"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="taskModalTitle" class="modal-title">Create New Task</h3>
+        <button class="modal-close" onclick="UI.closeModal('taskModal')">&times;</button>
+      </div>
+      <form id="taskForm">
+        <input type="hidden" id="taskId">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="taskTitle">Task Title *</label>
+            <input type="text" id="taskTitle" class="form-control" required placeholder="e.g. Send revised quote to Acme Corp">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="taskDescription">Description</label>
+            <textarea id="taskDescription" class="form-control" rows="3" placeholder="Context or specific instructions..."></textarea>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="taskPriority">Priority</label>
+              <select id="taskPriority" class="form-select">
+                <option value="low">Low</option>
+                <option value="medium" selected>Medium</option>
+                <option value="high">High</option>
+                <option value="urgent">Urgent</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="taskStatus">Status</label>
+              <select id="taskStatus" class="form-select">
+                <option value="pending">Pending</option>
+                <option value="in_progress">In Progress</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="taskDueDate">Due Date</label>
+              <input type="date" id="taskDueDate" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="taskAssignedTo">Assigned Rep</label>
+              <select id="taskAssignedTo" class="form-select">
+                <option value="">-- Unassigned --</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="taskRelatedType">Related Record Type</label>
+              <select id="taskRelatedType" class="form-select">
+                <option value="">-- None --</option>
+                <option value="customer">Customer</option>
+                <option value="lead">Lead</option>
+                <option value="deal">Deal</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="taskRelatedId">Related Record ID</label>
+              <input type="number" id="taskRelatedId" class="form-control" placeholder="Entity ID #">
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="UI.closeModal('taskModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/api.js?v=8.0"></script>
+  <script src="js/auth.js?v=8.0"></script>
+  <script src="js/app.js?v=8.0"></script>
+  <script src="js/tasks.js?v=8.0"></script>
+</body>
+</html>
