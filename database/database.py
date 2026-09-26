@@ -83,6 +83,7 @@ def _translate_mysql_to_sqlite(query):
     translated = re.sub(r"DATE_SUB\s*\(\s*(?:NOW\(\)|CURRENT_TIMESTAMP)\s*,\s*INTERVAL\s+(\d+)\s+MONTH\s*\)", r"datetime('now', '-\1 months')", translated, flags=re.IGNORECASE)
     translated = re.sub(r"DATE_SUB\s*\(\s*CURDATE\(\)\s*,\s*INTERVAL\s+WEEKDAY\s*\([^)]+\)\s+DAY\s*\)", r"date('now', '-7 days')", translated, flags=re.IGNORECASE)
     translated = re.sub(r"MAKEDATE\s*\([^)]+\)\s*\+\s*INTERVAL\s+[^)]+\s+MONTH", r"date('now', 'start of year')", translated, flags=re.IGNORECASE)
+    translated = re.sub(r"\s+FOR\s+UPDATE\b", "", translated, flags=re.IGNORECASE)
 
     return translated
 
