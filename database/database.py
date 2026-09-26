@@ -68,19 +68,36 @@ def _convert_row(row, dictionary=True):
 
 
 
+import re
+
+
+def _translate_mysql_to_sqlite(query):
+    translated = query.replace("%s", "?")
+    translated = translated.replace("NOW()", "CURRENT_TIMESTAMP")
+    if "ON DUPLICATE KEY UPDATE" in translated:
+        translated = translated.split("ON DUPLICATE KEY UPDATE")[0].replace("INSERT INTO", "INSERT OR REPLACE INTO")
+
+    translated = re.sub(r"DATE_SUB\s*\(\s*(?:NOW\(\)|CURRENT_TIMESTAMP)\s*,\s*INTERVAL\s+(\d+)\s+DAY\s*\)", r"datetime('now', '-\1 days')", translated, flags=re.IGNORECASE)
+    translated = re.sub(r"DATE_SUB\s*\(\s*CURDATE\(\)\s*,\s*INTERVAL\s+(\d+)\s+DAY\s*\)", r"date('now', '-\1 days')", translated, flags=re.IGNORECASE)
+    translated = re.sub(r"DATE_SUB\s*\(\s*CURDATE\(\)\s*,\s*INTERVAL\s+(\d+)\s+MONTH\s*\)", r"date('now', '-\1 months')", translated, flags=re.IGNORECASE)
+    translated = re.sub(r"DATE_SUB\s*\(\s*(?:NOW\(\)|CURRENT_TIMESTAMP)\s*,\s*INTERVAL\s+(\d+)\s+MONTH\s*\)", r"datetime('now', '-\1 months')", translated, flags=re.IGNORECASE)
+    translated = re.sub(r"DATE_SUB\s*\(\s*CURDATE\(\)\s*,\s*INTERVAL\s+WEEKDAY\s*\([^)]+\)\s+DAY\s*\)", r"date('now', '-7 days')", translated, flags=re.IGNORECASE)
+    translated = re.sub(r"MAKEDATE\s*\([^)]+\)\s*\+\s*INTERVAL\s+[^)]+\s+MONTH", r"date('now', 'start of year')", translated, flags=re.IGNORECASE)
+
+    return translated
+
+
 class SQLiteCursorWrapper:
     def __init__(self, cursor, dictionary=True):
         self._cursor = cursor
         self.dictionary = dictionary
 
     def execute(self, query, params=None):
-        translated = query.replace("%s", "?")
-        translated = translated.replace("NOW()", "CURRENT_TIMESTAMP")
-        if "ON DUPLICATE KEY UPDATE" in translated:
-            translated = translated.split("ON DUPLICATE KEY UPDATE")[0].replace("INSERT INTO", "INSERT OR REPLACE INTO")
+        translated = _translate_mysql_to_sqlite(query)
         if params is None:
             params = ()
         return self._cursor.execute(translated, params)
+
 
     def fetchone(self):
         row = self._cursor.fetchone()
