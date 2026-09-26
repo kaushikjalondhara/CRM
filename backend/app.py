@@ -178,11 +178,10 @@ def create_app(config_class=None):
     # Root route for serving frontend index.html or API discovery
     @app.route("/", methods=["GET"])
     def index():
-        if request.headers.get("Accept") == "application/json" or request.args.get("json"):
-            return api_discovery()
         if (frontend_dir / "index.html").exists():
             return send_from_directory(frontend_dir, "index.html")
         return api_discovery()
+
 
 
     # Catch-all route to serve frontend HTML/CSS/JS pages and assets
