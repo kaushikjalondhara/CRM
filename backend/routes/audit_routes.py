@@ -19,13 +19,13 @@ def get_audit_trail():
     Retrieves paginated immutable audit trail (Admin & Manager only).
     """
     search = request.args.get("search")
-    entity = request.args.get("entity")
+    entity = request.args.get("entity") or request.args.get("entity_type")
     action = request.args.get("action")
     user_id = request.args.get("user_id", type=int)
     start_date = request.args.get("start_date")
     end_date = request.args.get("end_date")
-    page = request.args.get("page", 1, type=int)
-    per_page = request.args.get("per_page", 25, type=int)
+    page = request.args.get("page", 1, type=int) or 1
+    per_page = request.args.get("per_page", 25, type=int) or 25
 
     result, err = list_audit_logs(
         search=search, entity=entity, action=action,
@@ -34,7 +34,7 @@ def get_audit_trail():
     )
 
     if err:
-        return jsonify({"success": False, "message": err}), 500
+        return jsonify({"success": False, "message": str(err)}), 400
 
     return jsonify({
         "success": True,

@@ -472,9 +472,12 @@ def init_sqlite_db(db_path=SQLITE_DB_PATH):
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           user_id INTEGER NULL,
           action TEXT NOT NULL,
-          module TEXT NOT NULL,
+          entity TEXT NOT NULL,
+          entity_id INTEGER NULL,
+          old_value TEXT NULL,
+          new_value TEXT NULL,
           ip_address TEXT NULL,
-          details TEXT NULL,
+          user_agent TEXT NULL,
           created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         );""",
         """CREATE TABLE IF NOT EXISTS documents (
