@@ -575,10 +575,58 @@ def init_sqlite_db(db_path=SQLITE_DB_PATH):
     for p_name, p_desc in permissions:
         cursor.execute("INSERT OR IGNORE INTO permissions (name, description) VALUES (?, ?)", (p_name, p_desc))
 
+    # 1. Admin (role_id=1): All permissions
     cursor.execute("SELECT id FROM permissions")
     for p_row in cursor.fetchall():
         p_id = p_row[0]
         cursor.execute("INSERT OR IGNORE INTO role_permissions (role_id, permission_id) VALUES (1, ?)", (p_id,))
+
+    # 2. Manager (role_id=2): Executive & Team Management Permissions
+    manager_perms = [
+        'dashboard.view', 'customers.view', 'customers.create', 'customers.update', 'customers.delete',
+        'leads.view', 'leads.create', 'leads.update', 'leads.delete', 'leads.convert',
+        'deals.view', 'deals.create', 'deals.update', 'deals.delete',
+        'tasks.view', 'tasks.create', 'tasks.update', 'tasks.delete',
+        'calls.view', 'calls.create', 'calls.update', 'calls.delete',
+        'meetings.view', 'meetings.create', 'meetings.update', 'meetings.delete',
+        'products.view', 'invoices.view', 'payments.view', 'reports.view', 'users.view', 'settings.view'
+    ]
+    for name in manager_perms:
+        cursor.execute("SELECT id FROM permissions WHERE name = ?", (name,))
+        r = cursor.fetchone()
+        if r:
+            cursor.execute("INSERT OR IGNORE INTO role_permissions (role_id, permission_id) VALUES (2, ?)", (r[0],))
+
+    # 3. Sales Employee (role_id=3): Field Sales & Prospecting Permissions
+    sales_perms = [
+        'dashboard.view', 'customers.view', 'customers.create', 'customers.update',
+        'leads.view', 'leads.create', 'leads.update', 'leads.convert',
+        'deals.view', 'deals.create', 'deals.update',
+        'tasks.view', 'tasks.create', 'tasks.update',
+        'calls.view', 'calls.create', 'calls.update',
+        'meetings.view', 'meetings.create', 'meetings.update',
+        'products.view', 'invoices.view'
+    ]
+    for name in sales_perms:
+        cursor.execute("SELECT id FROM permissions WHERE name = ?", (name,))
+        r = cursor.fetchone()
+        if r:
+            cursor.execute("INSERT OR IGNORE INTO role_permissions (role_id, permission_id) VALUES (3, ?)", (r[0],))
+
+    # 4. Staff (role_id=4): Operational Viewing & Progress Update Permissions
+    staff_perms = [
+        'dashboard.view', 'customers.view',
+        'tasks.view', 'tasks.update',
+        'calls.view',
+        'meetings.view',
+        'products.view'
+    ]
+    for name in staff_perms:
+        cursor.execute("SELECT id FROM permissions WHERE name = ?", (name,))
+        r = cursor.fetchone()
+        if r:
+            cursor.execute("INSERT OR IGNORE INTO role_permissions (role_id, permission_id) VALUES (4, ?)", (r[0],))
+
 
 
     users = [
