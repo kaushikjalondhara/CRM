@@ -121,8 +121,14 @@ def get_all_users():
     role_id = request.args.get("role_id")
     role_id = int(role_id) if role_id and role_id.isdigit() else None
     status = request.args.get("status")
-    page = max(1, int(request.args.get("page", 1)))
-    per_page = min(100, max(1, int(request.args.get("per_page", 20))))
+    page_raw = request.args.get("page", "1")
+
+    per_page_raw = request.args.get("per_page", "20")
+    page = int(page_raw) if page_raw and str(page_raw).isdigit() else 1
+    per_page = int(per_page_raw) if per_page_raw and str(per_page_raw).isdigit() else 20
+    page = max(1, page)
+    per_page = min(100, max(1, per_page))
+
 
     data, err = list_users(search=search, role_id=role_id, status=status, page=page, per_page=per_page)
     if err:

@@ -27,8 +27,14 @@ def get_all():
     search = request.args.get("search")
     category = request.args.get("category")
     status = request.args.get("status")
-    page = max(1, int(request.args.get("page", 1)))
-    per_page = min(100, max(1, int(request.args.get("per_page", 20))))
+    page_raw = request.args.get("page", "1")
+
+    per_page_raw = request.args.get("per_page", "20")
+    page = int(page_raw) if page_raw and str(page_raw).isdigit() else 1
+    per_page = int(per_page_raw) if per_page_raw and str(per_page_raw).isdigit() else 20
+    page = max(1, page)
+    per_page = min(100, max(1, per_page))
+
 
     data, err = list_products(search=search, category=category, status=status, page=page, per_page=per_page)
     if err:

@@ -29,9 +29,17 @@ def get_all():
     customer_id = request.args.get("customer_id")
     customer_id = int(customer_id) if customer_id and customer_id.isdigit() else None
     start_date = request.args.get("start_date")
+
     end_date = request.args.get("end_date")
-    page = max(1, int(request.args.get("page", 1)))
-    per_page = min(100, max(1, int(request.args.get("per_page", 20))))
+
+    page_raw = request.args.get("page", "1")
+
+    per_page_raw = request.args.get("per_page", "20")
+    page = int(page_raw) if page_raw and str(page_raw).isdigit() else 1
+    per_page = int(per_page_raw) if per_page_raw and str(per_page_raw).isdigit() else 20
+    page = max(1, page)
+    per_page = min(100, max(1, per_page))
+
 
     data, err = list_invoices(
         search=search, status=status, customer_id=customer_id,

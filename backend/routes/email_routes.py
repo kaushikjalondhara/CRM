@@ -102,8 +102,14 @@ def get_emails():
     deal_id = request.args.get("deal_id")
     deal_id = int(deal_id) if deal_id and deal_id.isdigit() else None
     status = request.args.get("status")
-    page = max(1, int(request.args.get("page", 1)))
-    per_page = min(100, max(1, int(request.args.get("per_page", 20))))
+    page_raw = request.args.get("page", "1")
+
+    per_page_raw = request.args.get("per_page", "20")
+    page = int(page_raw) if page_raw and str(page_raw).isdigit() else 1
+    per_page = int(per_page_raw) if per_page_raw and str(per_page_raw).isdigit() else 20
+    page = max(1, page)
+    per_page = min(100, max(1, per_page))
+
 
     data, err = list_emails(
         search=search, customer_id=customer_id, lead_id=lead_id,

@@ -14,6 +14,14 @@ logger = logging.getLogger("crm.payment_service")
 VALID_PAYMENT_METHODS = {"cash", "upi", "card", "bank_transfer", "other"}
 
 
+def _format_dt(val, fmt="%Y-%m-%d"):
+    if not val:
+        return None
+    if hasattr(val, "strftime"):
+        return val.strftime(fmt)
+    return str(val)
+
+
 def list_payments(search: str | None = None, invoice_id: int | None = None,
                   customer_id: int | None = None, payment_method: str | None = None,
                   start_date: str | None = None, end_date: str | None = None,
@@ -95,10 +103,10 @@ def list_payments(search: str | None = None, invoice_id: int | None = None,
             "amount": float(r["amount"] or 0.0),
             "payment_method": r["payment_method"],
             "transaction_reference": r["transaction_reference"],
-            "payment_date": r["payment_date"].strftime("%Y-%m-%d") if r["payment_date"] else None,
+            "payment_date": _format_dt(r["payment_date"], "%Y-%m-%d"),
             "notes": r["notes"],
             "recorded_by": f"{r['recorded_by_fn']} {r['recorded_by_ln']}".strip() if r["recorded_by_fn"] else None,
-            "created_at": r["created_at"].strftime("%Y-%m-%d %H:%M:%S") if r["created_at"] else None
+            "created_at": _format_dt(r["created_at"], "%Y-%m-%d %H:%M:%S")
         })
 
     # Summary metrics
@@ -152,11 +160,12 @@ def get_payment(payment_id: int) -> tuple[dict | None, str | None]:
         "amount": float(r["amount"] or 0.0),
         "payment_method": r["payment_method"],
         "transaction_reference": r["transaction_reference"],
-        "payment_date": r["payment_date"].strftime("%Y-%m-%d") if r["payment_date"] else None,
+        "payment_date": _format_dt(r["payment_date"], "%Y-%m-%d"),
         "notes": r["notes"],
         "recorded_by": f"{r['recorded_by_fn']} {r['recorded_by_ln']}".strip() if r["recorded_by_fn"] else None,
-        "created_at": r["created_at"].strftime("%Y-%m-%d %H:%M:%S") if r["created_at"] else None
+        "created_at": _format_dt(r["created_at"], "%Y-%m-%d %H:%M:%S")
     }, None
+
 
 
 def create_payment(data: dict, user_id: int | None = None) -> tuple[int | None, str | None]:
