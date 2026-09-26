@@ -1,7 +1,8 @@
 import os
 import sys
 from pathlib import Path
-from flask import Flask, jsonify, send_from_directory
+from flask import Flask, jsonify, send_from_directory, request
+
 from flask_cors import CORS
 
 
@@ -95,7 +96,8 @@ def create_app(config_class=None):
     """
     Application factory pattern to create and configure the Flask app.
     """
-    app = Flask(__name__)
+    frontend_dir = BASE_DIR / "frontend"
+    app = Flask(__name__, static_folder=str(frontend_dir), static_url_path="")
     app.json_provider_class = CustomJSONProvider
     app.json = CustomJSONProvider(app)
 
@@ -143,9 +145,10 @@ def create_app(config_class=None):
     except Exception:
         pass
 
-    # Root route for API welcome / discovery
-    @app.route("/", methods=["GET"])
-    def index():
+    # API discovery endpoint
+    @app.route("/api", methods=["GET"])
+    @app.route("/api/", methods=["GET"])
+    def api_discovery():
         return jsonify({
             "name": "CRM API",
             "version": "1.0.0",
@@ -171,6 +174,36 @@ def create_app(config_class=None):
     def serve_uploaded_file(filename):
         uploads_dir = BASE_DIR / "uploads"
         return send_from_directory(uploads_dir, filename)
+
+    # Root route for serving frontend index.html or API discovery
+    @app.route("/", methods=["GET"])
+    def index():
+        if request.headers.get("Accept") == "application/json" or request.args.get("json"):
+            return api_discovery()
+        if (frontend_dir / "index.html").exists():
+            return send_from_directory(frontend_dir, "index.html")
+        return api_discovery()
+
+
+    # Catch-all route to serve frontend HTML/CSS/JS pages and assets
+    @app.route("/<path:path>", methods=["GET"])
+    def serve_frontend(path):
+        if path.startswith("api/"):
+            return jsonify({
+                "success": False,
+                "error": "Endpoint not found",
+                "message": "The requested API endpoint was not found"
+            }), 404
+        file_path = frontend_dir / path
+        if file_path.exists() and file_path.is_file():
+            return send_from_directory(frontend_dir, path)
+        if (frontend_dir / "index.html").exists():
+            return send_from_directory(frontend_dir, "index.html")
+        return jsonify({
+            "success": False,
+            "error": "Not found"
+        }), 404
+
 
 
     # Standardized API error handlers returning clean JSON

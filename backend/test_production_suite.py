@@ -38,10 +38,11 @@ class TestApexCRMProductionSuite(unittest.TestCase):
         data = json.loads(res.data)
         self.assertTrue(data['success'])
 
-        res_root = self.client.get('/')
+        res_root = self.client.get('/api')
         self.assertEqual(res_root.status_code, 200)
         data_root = json.loads(res_root.data)
         self.assertEqual(data_root['status'], 'online')
+
 
     # 2. Standard Error Handlers (400, 401, 403, 404, 405)
     def test_02_error_handlers(self):
