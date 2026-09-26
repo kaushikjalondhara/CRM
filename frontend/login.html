@@ -30,27 +30,27 @@
         <!-- Login Form -->
         <form id="loginForm" novalidate>
           <div class="form-group">
-            <label for="email" class="form-label">Email Address <span style="font-weight: normal; color: var(--text-muted); font-size: 0.8rem;">(e.g., admin@crm.local or admin)</span></label>
+            <label for="email" class="form-label">Email Address</label>
             <input 
               type="email" 
               id="email" 
               name="email" 
               class="form-control" 
-              placeholder="admin@crm.local" 
+              placeholder="Enter your email" 
               required 
               autocomplete="email"
             >
           </div>
 
           <div class="form-group">
-            <label for="password" class="form-label">Password <span style="font-weight: normal; color: var(--text-muted); font-size: 0.8rem;">(e.g., Admin@123456)</span></label>
+            <label for="password" class="form-label">Password</label>
             <div class="password-input-wrapper">
               <input 
                 type="password" 
                 id="password" 
                 name="password" 
                 class="form-control" 
-                placeholder="Admin@123456" 
+                placeholder="Enter your password" 
                 required 
                 autocomplete="current-password"
               >
@@ -78,21 +78,6 @@
           <button type="submit" id="submitLoginBtn" class="btn btn-primary btn-block">Sign In</button>
         </form>
 
-        <!-- Development Quick-Fill Helper -->
-        <div class="demo-accounts-box">
-          <div class="demo-title">
-            <span>Quick Login Options:</span>
-            <span style="font-weight: normal; color: var(--text-muted);">Pass: [Role]@123456</span>
-          </div>
-          <div class="demo-pills" style="margin-bottom: 10px;">
-            <button type="button" class="demo-pill" onclick="quickFill('admin@crm.local', 'Admin@123456')">Admin</button>
-            <button type="button" class="demo-pill" onclick="quickFill('manager@crm.local', 'Manager@123456')">Manager</button>
-            <button type="button" class="demo-pill" onclick="quickFill('sales@crm.local', 'Sales@123456')">Sales</button>
-            <button type="button" class="demo-pill" onclick="quickFill('staff@crm.local', 'Staff@123456')">Staff</button>
-          </div>
-          <button type="button" class="btn btn-secondary btn-block btn-sm" style="font-size: 0.85rem; padding: 8px 12px; cursor: pointer; width: 100%; border: 1px dashed var(--primary); background: #f0fdf4; color: #166534; font-weight: 600;" onclick="oneClickAdminLogin()">⚡ 1-Click Login as Admin</button>
-        </div>
-
         <div class="auth-footer">
           <p>Protected by Apex Enterprise Security &bull; <a href="index.html">Back to Home</a></p>
         </div>
@@ -106,27 +91,6 @@
   <script src="js/auth.js?v=8.0"></script>
   <script src="js/app.js?v=8.0"></script>
   <script>
-    function quickFill(email, password) {
-      const emailEl = document.getElementById('email');
-      const passEl = document.getElementById('password');
-      if (emailEl) emailEl.value = email;
-      if (passEl) passEl.value = password;
-      const alertBox = document.getElementById('loginAlert');
-      if (alertBox) {
-        alertBox.className = 'alert';
-        alertBox.textContent = '';
-      }
-    }
-
-    function oneClickAdminLogin() {
-      quickFill('admin@crm.local', 'Admin@123456');
-      setTimeout(() => {
-        const form = document.getElementById('loginForm');
-        if (form) {
-          form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
-        }
-      }, 50);
-    }
 
     document.addEventListener('DOMContentLoaded', () => {
       // 1. If already authenticated with valid token, redirect straight to dashboard
