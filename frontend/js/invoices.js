@@ -389,6 +389,13 @@ async function handleInvoiceSubmit(e) {
   const id = document.getElementById('invoiceId').value;
   const isEdit = Boolean(id);
 
+  const customerIdRaw = document.getElementById('invCustomer').value;
+  const customerId = parseInt(customerIdRaw);
+  if (!customerIdRaw || isNaN(customerId)) {
+    UI.showToast('Please select a customer for this invoice', 'warning');
+    return;
+  }
+
   const rows = document.querySelectorAll('.invoice-item-row');
   const items = [];
   rows.forEach(row => {
@@ -415,7 +422,7 @@ async function handleInvoiceSubmit(e) {
   }
 
   const payload = {
-    customer_id: parseInt(document.getElementById('invCustomer').value),
+    customer_id: customerId,
     deal_id: document.getElementById('invDeal').value ? parseInt(document.getElementById('invDeal').value) : null,
     invoice_number: document.getElementById('invNumber').value.trim() || undefined,
     invoice_date: document.getElementById('invDate').value,
@@ -442,7 +449,8 @@ async function handleInvoiceSubmit(e) {
       UI.closeModal('invoiceModal');
       loadInvoices();
     } else {
-      UI.showToast(res.data?.message || 'Failed to save invoice', 'danger');
+      const errMsg = res.message || res.data?.message || 'Failed to save invoice';
+      UI.showToast(errMsg, 'danger');
     }
   } catch (err) {
     UI.showToast('Error saving invoice', 'danger');
@@ -670,7 +678,8 @@ async function handleQuickPaymentSubmit(e) {
       UI.closeModal('quickPaymentModal');
       loadInvoices();
     } else {
-      UI.showToast(res.data?.message || 'Failed to record payment', 'danger');
+      const errMsg = res.message || res.data?.message || 'Failed to record payment';
+      UI.showToast(errMsg, 'danger');
     }
   } catch (err) {
     UI.showToast('Error recording payment', 'danger');
